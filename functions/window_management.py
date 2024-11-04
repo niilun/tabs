@@ -7,18 +7,20 @@ unbalanced_teams_window_opened = False
 
 # Wrappers for game actions
 def create_unit_ui_wrapper(selected_unit, team):
+    '''Internal function'''
     from functions.unit_management import create_unit
-    global main_window
+    global main_window  
 
     try:
         create_unit(selected_unit, team)
     # Create an info window saying unit was not found
     except Exception:
-        not_found_window = tk.Toplevel(main_window)
-        not_found_text = tk.Label(not_found_window, text=f'Unit {selected_unit} not found!').pack()
-        not_found_close = tk.Button(not_found_window, text = 'Close', command=not_found_window.destroy).pack()
+        not_found_window = tk.Toplevel(main_window, )
+        tk.Label(not_found_window, text=f'Unit {selected_unit} not found!').pack()
+        tk.Button(not_found_window, text = 'Close', command=not_found_window.destroy).pack()
     
 def take_next_action_ui_wrapper():
+    '''Internal function'''
     from functions.unit_management import take_next_action
     global main_window
 
@@ -26,11 +28,12 @@ def take_next_action_ui_wrapper():
         take_next_action()
     except Exception:
         unbalanced_teams_window = tk.Toplevel(main_window)
-        tk.Label(unbalanced_teams_window, text=f"Some teams don't have units! Add some before they can take their turns.").pack()
+        tk.Label(unbalanced_teams_window, text=f"One or both teams are empty! Add units to both sides before they can fight.").pack()
         tk.Button(unbalanced_teams_window, text = 'Close', command=unbalanced_teams_window.destroy).pack()
 
 # UI
 def display_unit_list():
+    '''Internal function'''
     from functions.unit_management import get_all_units
     global main_window, unit_list_window_opened
 
@@ -49,6 +52,7 @@ def display_unit_list():
         unit_list_window_opened = True
 
 def display_unit_max_reached():
+    '''Internal function'''
     global main_window, unit_max_reached_window_opened
     
     def close():
