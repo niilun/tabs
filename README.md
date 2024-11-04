@@ -10,17 +10,17 @@
 
 ## Adding your own units
 
-For a new unit to be considered valid, it needs **a couple things**:
+You need just a *couple* things to create a working, shiny new unit:
 
-1. Firstly, to be considered valid, a unit needs to have ```current_health```, ```max_health```, ```armor``` and ```attack_damage``` in it's ```__init__``` method. 
+1. To be considered valid, a unit needs to have ```current_health```, ```max_health```, ```armor``` and ```attack_damage``` in it's ```__init__``` method. 
 
-**Note**: A unit does not necessarily have to interact with it's armor or max_health value (though other units may), but the variable needs to exist for unit combat to take place correctly, even if it's at 0.
+> **Note**: A unit does not necessarily have to interact with it's ```armor``` or ```max_health``` value (though other units may), but the variable **needs** to exist for unit combat to take place correctly, even if it's at 0.
 
-2. Secondly, if the unit is in a different file, make sure to import it in ```unit_management.py```.
+2. If the unit is in a different file, make sure to import it in ```unit_management.py```.
 
-3. Finally, add a new elif statement with the unit's user-friendly name and instantiate that unit to the 'created_unit' variable.
+3. Add a new ```elif``` statement with the unit's user-friendly name and instantiate that unit to the ```created_unit``` variable.
 
-**Note**: Functions described as ```Internal function``` are generally not to be modified if all you need is a new unit.
+> **Note**: Functions described as ```Internal function``` are generally not to be modified if all you need is a new unit.
 
 **For more info on modding, check the code documentation.**
 
