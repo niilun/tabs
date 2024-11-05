@@ -24,23 +24,27 @@ class BaseUnit():
         if self.current_health < self.max_health/2 and self.armor < 10 and randint(1, 10) <= 2:
             self.ability_defend()
             return
-        target = next(enemy for enemy in enemies if enemy.current_health == min(enemy.current_health for enemy in enemies))
-        self.ability_attack(target)
+        
+        # Target is the enemy with lowest HP. If there are 2+ units with the same HP, the lowest ID gets selected
+        target = [enemy for enemy in enemies if enemy.current_health == min(enemy.current_health for enemy in enemies)][0]
+        target.get_attacked(self.attack_damage)
+        
         logging.debug(f"{self.unit_name} attacked unit ID {target.id} ({target.unit_name}), dealing {self.attack_damage} damage. (HP now {target.current_health})")
 
-    def ability_attack(self, target):
+    def get_attacked(self, damage):
         '''
-        Default Attack
+        Default course of action when getting attacked
+
         Tries to break armor, otherwise attacks
         '''
-        if target.armor > 0:
-            if target.armor - self.attack_damage <= 0:
-                target.armor = 0
+        if self.armor > 0:
+            if self.armor - damage <= 0:
+                self.armor = 0
                 return
-            target.armor -= self.attack_damage
+            self.armor -= damage
             return
         
-        target.current_health -= self.attack_damage
+        self.current_health -= damage
 
     def ability_defend(self):
         '''

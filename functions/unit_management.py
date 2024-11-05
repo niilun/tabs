@@ -66,6 +66,7 @@ def create_unit(unit, team):
 def take_next_action():
     '''Internal function'''
     global turn_counter, unit_counter
+    turn_taken = False
 
     # No fights can happen between empty teams
     if (active_units_team_1 and not active_units_team_2) or (active_units_team_2 and not active_units_team_1) or (not active_units_team_1 and not active_units_team_2):
@@ -75,26 +76,25 @@ def take_next_action():
     if turn_counter > len(active_units_team_1) + len(active_units_team_2):
         turn_counter = 1
     
-    if turn_counter <= len(active_units_team_1):
+    if turn_counter <= len(active_units_team_1) and not turn_taken:
         logging.debug(f'Unit on team 1 turn counter {turn_counter} is taking turn')
         active_units_team_1[turn_counter - 1].take_turn(active_units_team_2)
         turn_counter += 1
+        turn_taken = True
 
-    if turn_counter <= len(active_units_team_1) + len(active_units_team_2):
+    if turn_counter <= len(active_units_team_1) + len(active_units_team_2) and not turn_taken:
         logging.debug(f'Unit on team 2 turn counter {turn_counter} is taking turn')
         active_units_team_2[turn_counter - len(active_units_team_1) - 1].take_turn(active_units_team_1)
         turn_counter += 1
-    
+        turn_taken = True
+
     cleanup_units()
 
 def cleanup_units():
     '''Internal function'''
     global next_available_id, unit_counter, active_units_team_1, active_units_team_2
-    
-    active_1_copy = active_units_team_1.copy()
-    active_2_copy = active_units_team_2.copy()
 
-    for unit in active_1_copy:
+    for unit in active_units_team_1.copy():
         if unit.current_health <= 0:
             if unit.id == next_available_id:
                 next_available_id -= 1
@@ -105,14 +105,14 @@ def cleanup_units():
             unit_counter -= 1
             active_units_team_1.remove(unit)
 
-    for unit in active_2_copy:
+    for unit in active_units_team_2.copy():
         if unit.current_health <= 0:
             if unit.id == next_available_id:
                 next_available_id -= 1
             try:
                 logging.debug(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
             except Exception:
-                logging.debug(f'Unit <name missing> (ID: {unit.id}) dead, removing')
+                logging.debug(f'Error when parsing Unit name or ID but it is dead, removing')
             unit_counter -= 1
             active_units_team_2.remove(unit)
 
