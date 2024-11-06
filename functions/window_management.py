@@ -64,14 +64,15 @@ def display_unit_list():
     if not unit_list_window_opened:
         unit_help_window = tk.Toplevel(main_window)
 
-        tk.Label(unit_help_window, text=f'Available units: {", ".join(get_all_units())}').pack()
+        tk.Label(unit_help_window, text=f'Available units: {get_all_units()}').pack()
         tk.Button(unit_help_window, text = 'OK', command=close).pack()
 
         unit_list_window_opened = True
 
 def display_main_window():
     '''Displays the main window'''
-    from functions.file_management import get_version
+    from main import version
+
     global unit_select_input, main_window
 
     main_window = tk.Tk()
@@ -91,7 +92,7 @@ def display_main_window():
 
     tk.Button(text='Unit list', command=display_unit_list).pack()
 
-    tk.Label(text = get_version()).pack()
+    tk.Label(text = f'v{version}').pack()
 
     logging.debug('Running main window loop')
     main_window.mainloop()

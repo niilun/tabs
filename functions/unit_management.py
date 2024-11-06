@@ -13,6 +13,10 @@ max_units_on_field = 10
 active_units_team_1 = []
 active_units_team_2 = []
 
+# Used to prevent crashes from missing files
+fallback_units = 'warrior, spearman'
+fallback_eras = 'ancient, classical'
+
 def create_unit(unit, team):
     '''
     Creates a unit using input from the tkinter window interface, called when pressing
@@ -93,7 +97,8 @@ def take_next_action():
 def cleanup_units():
     '''Internal function'''
     global next_available_id, unit_counter, active_units_team_1, active_units_team_2
-
+    
+    # Use copies when iterating
     for unit in active_units_team_1.copy():
         if unit.current_health <= 0:
             if unit.id == next_available_id:
@@ -121,20 +126,27 @@ def get_all_units():
     Reads text from the "units_list" file (file location is hard-coded). Used to display help messages,
     show them in the selection dropdown and load units on game start.
 
+    IF the 'units_list' file does not exist, a default fallback is created.
+
     FILE FORMATTING
     
         unit1, unit2, unit3 (separated by a comma and a space) without newlines.
     '''
     try:
         with open('units_list', 'r') as f:
-            return f.readline().split(', ')
+            return f.readline()
     except FileNotFoundError:
-        raise FileNotFoundError('units_list does not exist')
+        logging.debug('The "units_list" file is MISSING! Creating a new copy.')
+        with open('units_list', 'w+') as f:
+            f.write(fallback_units)
+        return fallback_units
 
-def get_unit_eras():
+def get_all_eras():
     '''
-    Reads text from the "eras_list" file (file location is hard-coded). Used to display help messages,
+    Reads text from the 'eras_list' file (file location is hard-coded). Used to display help messages,
     categorize units and load eras on game start.
+
+    IF the 'eras_list' file does not exist, a default fallback is created.
 
     FILE FORMATTING
     
@@ -142,6 +154,10 @@ def get_unit_eras():
     '''
     try:
         with open('eras_list', 'r') as f:
-            return f.readline().split(', ')
+            return f.readline()
     except FileNotFoundError:
-        raise FileNotFoundError('eras_list does not exist')
+        logging.debug('The "eras_list" file is MISSING! Creating a new copy.')
+        with open('eras_list', 'w+') as f:
+            f.write(fallback_eras)
+        return fallback_eras
+            
