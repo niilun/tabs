@@ -1,23 +1,26 @@
 import logging
 import tkinter as tk
 
+# Variables to prevent duplicate windows
 unit_list_window_opened = False
-unit_max_reached_window_opened = False
-unbalanced_teams_window_opened = False
+any_error_window_opened = False
 
+invalid_inputs = ['', ' ', 'help']
 # Wrappers for game actions
 def create_unit_ui_wrapper(selected_unit, team):
     '''Internal function'''
     from functions.unit_management import create_unit
     global main_window  
 
+    if selected_unit in invalid_inputs:
+        display_unit_list()
+        return
+
     try:
         create_unit(selected_unit, team)
     # Create an info window saying unit was not found
     except Exception:
-        not_found_window = tk.Toplevel(main_window, )
-        tk.Label(not_found_window, text=f'Unit {selected_unit} not found!').pack()
-        tk.Button(not_found_window, text = 'Close', command=not_found_window.destroy).pack()
+        display_error_window(f'Unit {selected_unit} not found!')
     
 def take_next_action_ui_wrapper():
     '''Internal function'''
@@ -27,11 +30,26 @@ def take_next_action_ui_wrapper():
     try:
         take_next_action()
     except Exception:
-        unbalanced_teams_window = tk.Toplevel(main_window)
-        tk.Label(unbalanced_teams_window, text=f"One or both teams are empty! Add units to both sides before they can fight.").pack()
-        tk.Button(unbalanced_teams_window, text = 'Close', command=unbalanced_teams_window.destroy).pack()
+        display_error_window('One or both teams are empty! Add units to both sides before they can fight.')
 
 # UI
+def display_error_window(error_message):
+        '''
+        Displays a standard error window with message error_message.
+        '''
+        global main_window, any_error_window_opened
+
+        def close():
+            global any_error_window_opened
+
+            any_error_window_opened = False
+            error_window.destroy()
+
+        if not any_error_window_opened:
+            error_window = tk.Toplevel(main_window)
+            tk.Label(error_window, text=f"{error_message}").pack()
+            tk.Button(error_window, text = 'Close', command=close).pack()
+
 def display_unit_list():
     '''Internal function'''
     from functions.unit_management import get_all_units
@@ -51,38 +69,19 @@ def display_unit_list():
 
         unit_list_window_opened = True
 
-def display_unit_max_reached():
-    '''Internal function'''
-    global main_window, unit_max_reached_window_opened
-    
-    def close():
-        global unit_max_reached_window_opened
-
-        unit_max_reached_window_opened = False
-        unit_max_window.destroy()
-    
-    if not unit_max_reached_window_opened:
-        unit_max_window = tk.Toplevel(main_window)
-
-        tk.Label(unit_max_window, text=f'The maximum number of units on the field at one time is 10!').pack()
-        tk.Button(unit_max_window, text = 'OK', command=close).pack()
-
-        unit_max_reached_window_opened = True
-
-
 def display_main_window():
-    '''Internal function'''
+    '''Displays the main window'''
     from functions.file_management import get_version
     global unit_select_input, main_window
 
-    # Left pane (unit select & info)
     main_window = tk.Tk()
+
+    # Left pane (unit select & info)
     main_window.geometry('920x640')
     main_window.title('TABS')
 
     unit_select_input = tk.Entry()
     unit_select_input.pack()
-
 
     tk.Button(text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).pack()
 

@@ -24,6 +24,14 @@ You need just a *couple* things to create a working, shiny new unit:
 
 **For more info on modding, check the code documentation.**
 
+## Building an executable
+
+You can package up the code into **executable form** using ```pyinstaller```.
+
+1. If you don't have it installed already, run ```pip install -r requirements.txt``` to install all requirements.
+
+2. Run the build scripts from ```build_scripts/```. Use ```build.sh``` on Linux or ```build.bat``` on Windows. 
+
 ## Extra info / Acknowledgments
 
 The logo was made using the [Null](https://www.fontfabric.com/fonts/null/#font-styles) font (Made by Svetoslav Simov), adding a 15px outline to the glyphs.

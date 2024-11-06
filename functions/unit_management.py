@@ -34,14 +34,14 @@ def create_unit(unit, team):
         Then, add a new elif statement with the unit's name and instantiate
         that unit to the 'created_unit' variable.
     '''
-    from functions.window_management import display_unit_max_reached
+    from functions.window_management import display_error_window
     global next_available_id, unit_counter
 
     if unit not in get_all_units():
         raise Exception('Unit not in units_list')
     
     if unit_counter >= max_units_on_field:
-        display_unit_max_reached()
+        display_error_window('The maximum number of units on the field at one time is 10!')
         raise Exception('Max units on field')
 
     if unit == 'warrior':
