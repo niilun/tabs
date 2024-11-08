@@ -70,30 +70,32 @@ def display_unit_list():
         unit_list_window_opened = True
 
 def display_main_window():
-    '''Displays the main window'''
+    '''Internal function'''
     from main import version
 
     global unit_select_input, main_window
 
     main_window = tk.Tk()
 
-    # Left pane (unit select & info)
     main_window.geometry('920x640')
     main_window.title('TABS')
 
-    unit_select_input = tk.Entry()
+    # Left pane (unit select & info)
+    left_pane = tk.Frame(main_window)
+    unit_select_input = tk.Entry(left_pane)
     unit_select_input.pack()
 
-    tk.Button(text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).pack()
+    tk.Button(left_pane, text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).pack()
 
-    tk.Button(text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 2)).pack()
+    tk.Button(left_pane, text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 2)).pack()
 
-    tk.Button(text = 'Take next action', command=take_next_action_ui_wrapper).pack()
+    tk.Button(left_pane, text = 'Take next action', command=take_next_action_ui_wrapper).pack()
 
-    tk.Button(text='Unit list', command=display_unit_list).pack()
+    tk.Button(left_pane, text='Unit list', command=display_unit_list).pack()
 
     tk.Label(text = f'v{version}').pack()
 
+    left_pane.pack(side=tk.LEFT)
     logging.debug('Running main window loop')
     main_window.mainloop()
     
