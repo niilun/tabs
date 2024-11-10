@@ -2,7 +2,7 @@ from .base import *
 import logging
 
 # +---------------------+
-# |  ancient era units  |
+# |  classic era units  |
 # |  TODO: add all      |
 # |  units info         |
 # +---------------------+
