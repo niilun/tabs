@@ -14,13 +14,12 @@ You need just a *couple* things to create a working, shiny new unit:
 
 1. To be considered valid, a unit needs to have ```current_health```, ```max_health```, ```armor``` and ```attack_damage``` in it's ```__init__``` method. 
 
-> **Note**: A unit does not necessarily have to interact with it's ```armor``` or ```max_health``` value (though other units may), but the variable **needs** to exist for unit combat to take place correctly, even if it's at 0.
+> **Note**: The ```armor``` and ```max_health``` values are optional to use. Also, units can have ```attributes``` like *cavalry* or *melee* that other units can
+check against for special effects (stuff like anti-cavalry dealing more damage)
 
-2. If the unit is in a different file, make sure to import it in ```unit_management.py```.
+2. Check if the unit is imported to ```unit_management.py```.
 
 3. Add a new ```elif``` statement with the unit's user-friendly name and instantiate that unit to the ```created_unit``` variable.
-
-> **Note**: Functions described as ```Internal function``` are generally not to be modified if all you need is a new unit.
 
 **For more info on modding, check the code documentation.**
 
@@ -28,18 +27,20 @@ You need just a *couple* things to create a working, shiny new unit:
 
 You can package up the code into **executable form** using ```pyinstaller```.
 
-1. If you don't have it installed already, run ```pip install -r requirements.txt``` to install all requirements.
+1. If you don't have them installed already, run ```pip install -r requirements.txt``` to install all requirements.
 
 2. Run the build scripts from ```build_scripts/```. Use ```build.sh``` on Linux or ```build.bat``` on Windows. 
 
 ## Extra info / Acknowledgments
 
-The logo was made using the [Null](https://www.fontfabric.com/fonts/null/#font-styles) font (Made by Svetoslav Simov), adding a 15px outline to the glyphs.
+Logo was made using the [Null](https://www.fontfabric.com/fonts/null/#font-styles) font (Made by Svetoslav Simov).
 
 ## To-do list
 
 - [ ] UI overhaul
 - [ ] More units
+- [ ] More interactions between units
+- [ ] More types of fights
 
 ## License
 

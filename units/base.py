@@ -9,10 +9,11 @@ class BaseUnit():
     '''
     def __init__(self, id):
         self.unit_name = "Base unit"
+        self.attributes = []
         self.id = id
-        self.armor = 0
         self.current_health = 1
         self.max_health = 1
+        self.armor = 0
         self.attack_damage = 0
 
     def take_turn(self, enemies):
@@ -26,7 +27,10 @@ class BaseUnit():
             return
         
         # Target is the enemy with lowest HP. If there are 2+ units with the same HP, the lowest ID gets selected
-        target = [enemy for enemy in enemies if enemy.current_health == min(enemy.current_health for enemy in enemies)][0]
+        min_health_in_enemy_team = min([enemy.current_health for enemy in enemies])
+        for enemy in enemies:
+            if enemy.current_health == min_health_in_enemy_team:
+                target = enemy
         target.get_attacked(self.attack_damage)
         
         logging.debug(f"{self.unit_name} attacked unit ID {target.id} ({target.unit_name}), dealing {self.attack_damage} damage. (HP now {target.current_health})")
