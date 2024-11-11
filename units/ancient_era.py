@@ -2,8 +2,6 @@ from .base import *
 
 # +---------------------+
 # |  ancient era units  |
-# |  TODO: add all      |
-# |  units info         |
 # +---------------------+
 
 class Warrior(BaseUnit):

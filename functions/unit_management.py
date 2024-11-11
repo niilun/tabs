@@ -1,7 +1,13 @@
 import logging
 
-from units.ancient import *
-from units.classical import *
+from units.ancient_era import *
+from units.classical_era import *
+from units.medieval_era import *
+from units.renaissance_era import *
+from units.industrial_era import *
+from units.modern_era import *
+from units.atomic_era import *
+from units.information_era import *
 
 # Management counters
 next_available_id = 1
@@ -14,8 +20,8 @@ active_units_team_1 = []
 active_units_team_2 = []
 
 # Used to prevent crashes from missing files
-fallback_units = 'warrior, spearman'
-fallback_eras = 'ancient, classical'
+fallback_units = 'warrior, spearman, man-at-arms, musketman, line infantry, infantry, mechanized infantry'
+fallback_eras = 'ancient, classical, medieval, renaissance, industrial, modern, atomic, information'
 
 def create_unit(unit, team):
     '''
@@ -52,6 +58,16 @@ def create_unit(unit, team):
         created_unit = Warrior(next_available_id)
     elif unit == 'spearman':
         created_unit = Spearman(next_available_id)
+    elif unit == 'man-at-arms' or unit == 'man_at_arms' or unit == 'man at arms':
+        created_unit = Man_at_Arms(next_available_id)
+    elif unit == 'musketman':
+        created_unit = Musketman(next_available_id)
+    elif unit == 'line infantry' or unit == 'line_infantry':
+        created_unit = Line_Infantry(next_available_id)
+    elif unit == 'infantry':
+        created_unit = Infantry(next_available_id)
+    elif unit == 'mechanized infantry' or unit == 'mechanized_infantry':
+        created_unit = Mechanized_Infantry(next_available_id)
     
     if team == 1:
         active_units_team_1.append(created_unit)

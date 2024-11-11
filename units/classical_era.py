@@ -3,8 +3,6 @@ import logging
 
 # +---------------------+
 # |  classic era units  |
-# |  TODO: add all      |
-# |  units info         |
 # +---------------------+
 
 class Spearman(BaseUnit):
