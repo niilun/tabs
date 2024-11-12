@@ -14,6 +14,7 @@ def main():
     logging.debug(f'Loaded {len(all_eras_map)} eras')
 
     display_main_window()
+    logging.shutdown()
 
 if __name__ == '__main__':
     main()
