@@ -4,7 +4,7 @@ from .base import *
 # |  medieval era units  |
 # +----------------------+
 
-class Man_at_Arms(BaseUnit):
+class man_at_arms(base_unit):
     def __init__(self, id):
         self.unit_name = "Man-at-Arms"
         self.id = id

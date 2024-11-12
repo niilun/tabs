@@ -5,7 +5,7 @@ import logging
 # |  classic era units  |
 # +---------------------+
 
-class Spearman(BaseUnit):
+class spearman(base_unit):
     def __init__(self, id):
         self.unit_name = 'Spearman'
         self.id = id

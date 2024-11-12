@@ -5,12 +5,13 @@ import tkinter as tk
 unit_list_window_opened = False
 any_error_window_opened = False
 
-invalid_inputs = ['', ' ', 'help']
 # Wrappers for game actions
 def create_unit_ui_wrapper(selected_unit, team):
     '''Internal function'''
     from functions.unit_management import create_unit
     global main_window  
+
+    invalid_inputs = ['', ' ', 'help']
 
     if selected_unit in invalid_inputs:
         display_unit_list()
@@ -18,9 +19,8 @@ def create_unit_ui_wrapper(selected_unit, team):
 
     try:
         create_unit(selected_unit, team)
-    # Create an info window saying unit was not found
-    except Exception:
-        display_error_window(f'Unit {selected_unit} not found!')
+    except Exception as error_message:
+        display_error_window(f'Error when creating unit: \n{error_message}')
     
 def take_next_action_ui_wrapper():
     '''Internal function'''
@@ -29,8 +29,8 @@ def take_next_action_ui_wrapper():
 
     try:
         take_next_action()
-    except Exception:
-        display_error_window('One or both teams are empty! Add units to both sides before they can fight.')
+    except Exception as error_message:
+        display_error_window(f'Error when taking next action: \n{error_message}')
 
 # UI
 def display_error_window(error_message):
@@ -51,8 +51,8 @@ def display_error_window(error_message):
             tk.Button(error_window, text = 'Close', command=close).pack()
 
 def display_unit_list():
-    '''Internal function'''
-    from functions.unit_management import get_all_units
+    '''Displays all loaded units in a generic info window.'''
+    from functions.unit_management import all_units_map
     global main_window, unit_list_window_opened
 
     def close():
@@ -64,7 +64,7 @@ def display_unit_list():
     if not unit_list_window_opened:
         unit_help_window = tk.Toplevel(main_window)
 
-        tk.Label(unit_help_window, text=f'Available units: {get_all_units()}').pack()
+        tk.Label(unit_help_window, text=f'Available units: {", ".join([unit.__name__.replace("_", " ").title() for unit in all_units_map.values()])}').pack()
         tk.Button(unit_help_window, text = 'OK', command=close).pack()
 
         unit_list_window_opened = True

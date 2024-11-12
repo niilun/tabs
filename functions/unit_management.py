@@ -9,7 +9,30 @@ from units.modern_era import *
 from units.atomic_era import *
 from units.information_era import *
 
-# Management counters
+# Maps used when the user interacts with the game (add your units and/or eras here)
+all_units_map = {
+    'warrior': warrior,
+    'spearman': spearman,
+    'man at arms': man_at_arms,
+    'musketman': musketman,
+    'infantry': infantry,
+    'line infantry': line_infantry,
+    'mechanized infantry': mechanized_infantry
+}
+
+# Maps units to their specific eras (used in the future maybe, in a dropdown menu to select units)
+all_eras_map = {
+    'ancient': warrior,
+    'classical': spearman,
+    'medieval': man_at_arms,
+    'renaissance': musketman,
+    'industrial': line_infantry,
+    'modern': infantry,
+    'atomic': None,
+    'information': mechanized_infantry
+}
+
+# Unit management counters
 next_available_id = 1
 unit_counter = 1
 turn_counter = 1
@@ -18,10 +41,6 @@ max_units_on_field = 10
 
 active_units_team_1 = []
 active_units_team_2 = []
-
-# Used to prevent crashes from missing files
-fallback_units = 'warrior, spearman, man-at-arms, musketman, line infantry, infantry, mechanized infantry'
-fallback_eras = 'ancient, classical, medieval, renaissance, industrial, modern, atomic, information'
 
 def create_unit(unit, team):
     '''
@@ -44,35 +63,19 @@ def create_unit(unit, team):
         Then, add a new elif statement with the unit's name and instantiate
         that unit to the 'created_unit' variable.
     '''
-    from functions.window_management import display_error_window
     global next_available_id, unit_counter
 
-    if unit not in get_all_units():
-        raise Exception('Unit not in units_list')
+    if unit not in all_units_map:
+        raise Exception('Unit does not exist or is not declared!')
     
-    if unit_counter >= max_units_on_field:
-        display_error_window('The maximum number of units on the field at one time is 10!')
-        raise Exception('Max units on field')
+    created_unit = all_units_map[unit.lower()](next_available_id)
 
-    if unit == 'warrior':
-        created_unit = Warrior(next_available_id)
-    elif unit == 'spearman':
-        created_unit = Spearman(next_available_id)
-    elif unit == 'man-at-arms' or unit == 'man_at_arms' or unit == 'man at arms':
-        created_unit = Man_at_Arms(next_available_id)
-    elif unit == 'musketman':
-        created_unit = Musketman(next_available_id)
-    elif unit == 'line infantry' or unit == 'line_infantry':
-        created_unit = Line_Infantry(next_available_id)
-    elif unit == 'infantry':
-        created_unit = Infantry(next_available_id)
-    elif unit == 'mechanized infantry' or unit == 'mechanized_infantry':
-        created_unit = Mechanized_Infantry(next_available_id)
-    
     if team == 1:
         active_units_team_1.append(created_unit)
-    else:
+    elif team == 2:
         active_units_team_2.append(created_unit)
+    else:
+        raise Exception(f"Invalid team call {team}")
     
     logging.debug(f'Created unit {unit} ID {next_available_id}')
     next_available_id += 1
@@ -90,7 +93,7 @@ def take_next_action():
 
     # No fights can happen between empty teams
     if (active_units_team_1 and not active_units_team_2) or (active_units_team_2 and not active_units_team_1) or (not active_units_team_1 and not active_units_team_2):
-        raise Exception
+        raise Exception('No fights can happen between empty teams! \nAdd some units to both before continuing to take turns.')
     
     # Reset to a new turn cycle if all turns exhausted
     if turn_counter > len(active_units_team_1) + len(active_units_team_2):
@@ -136,44 +139,3 @@ def cleanup_units():
                 logging.debug(f'Error when parsing Unit name or ID but it is dead, removing')
             unit_counter -= 1
             active_units_team_2.remove(unit)
-
-def get_all_units():
-    '''
-    Reads text from the "units_list" file (file location is hard-coded). Used to display help messages,
-    show them in the selection dropdown and load units on game start.
-
-    IF the 'units_list' file does not exist, a default fallback is created.
-
-    FILE FORMATTING
-    
-        unit1, unit2, unit3 (separated by a comma and a space) without newlines.
-    '''
-    try:
-        with open('units_list', 'r') as f:
-            return f.readline()
-    except FileNotFoundError:
-        logging.debug('The "units_list" file is MISSING! Creating a new copy.')
-        with open('units_list', 'w+') as f:
-            f.write(fallback_units)
-        return fallback_units
-
-def get_all_eras():
-    '''
-    Reads text from the 'eras_list' file (file location is hard-coded). Used to display help messages,
-    categorize units and load eras on game start.
-
-    IF the 'eras_list' file does not exist, a default fallback is created.
-
-    FILE FORMATTING
-    
-        era1, era2, era3 (separated by a comma and a space) without newlines.
-    '''
-    try:
-        with open('eras_list', 'r') as f:
-            return f.readline()
-    except FileNotFoundError:
-        logging.debug('The "eras_list" file is MISSING! Creating a new copy.')
-        with open('eras_list', 'w+') as f:
-            f.write(fallback_eras)
-        return fallback_eras
-            

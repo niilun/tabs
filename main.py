@@ -1,8 +1,8 @@
 import logging
-from functions.unit_management import get_all_eras, get_all_units
+from functions.unit_management import all_units_map, all_eras_map
 from functions.window_management import display_main_window
 
-version = '0.2.0pre-1'
+version = '0.2.0pre-2'
 
 logging.basicConfig(level=logging.DEBUG, format='%(levelname)s | %(message)s')
 
@@ -10,8 +10,8 @@ def main():
     '''Internal function'''
     logging.debug(f'TABS Version {version} | https://github.com/Leowondeh/TABS')
 
-    logging.debug(f'Loaded eras {(get_all_eras())}')
-    logging.debug(f'Loaded units {(get_all_units())}')
+    logging.debug(f'Loaded units map with {len(all_units_map)} entries: {[unit.__name__ .replace("_", " ") for unit in all_units_map.values()]}')
+    logging.debug(f'Loaded {len(all_eras_map)} eras')
 
     display_main_window()
 

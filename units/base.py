@@ -1,11 +1,11 @@
 import logging
 from random import randint
 
-class BaseUnit():
+class base_unit():
     '''
     Base model for units, does not have stats.
 
-    DO NOT modify it's stats or add new abilities, instead create a new unit inheriting from BaseUnit.
+    DO NOT modify it's stats or add new abilities, instead create a new unit inheriting from base_unit.
     '''
     def __init__(self, id):
         self.unit_name = "Base unit"
@@ -20,7 +20,7 @@ class BaseUnit():
         '''
         Default AI
 
-        Tries to use Defend (although randomly and rarely) if HP is lower than 50%, otherwise attacks lowest HP unit
+        Tries to use Defend (although randomly) if HP is lower than 50%, otherwise attacks lowest HP unit
         '''
         if self.current_health < self.max_health/2 and self.armor < 10 and randint(1, 10) <= 2:
             self.ability_defend()
@@ -40,6 +40,7 @@ class BaseUnit():
         Default course of action when getting attacked
 
         Tries to break armor, otherwise attacks
+        Excess damage is nulled!
         '''
         if self.armor > 0:
             if self.armor - damage <= 0:

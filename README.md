@@ -4,7 +4,7 @@
 
 ## Getting started
 
-1. **Clone** this repository ```git clone https://github.com/Leowondeh/tabs.git``` or download it.
+1. **Clone** this repository ```git clone https://github.com/Leowondeh/tabs.git``` or download it as ZIP.
 
 2. Enter the **TABS root folder** and run TABS with Python ```py```/```python3```/```python``` ```main.py```.
 
@@ -14,12 +14,11 @@ You need just a *couple* things to create a working, shiny new unit:
 
 1. To be considered valid, a unit needs to have ```current_health```, ```max_health```, ```armor``` and ```attack_damage``` in it's ```__init__``` method. 
 
-> **Note**: The ```armor``` and ```max_health``` values are optional to use. Also, units can have ```attributes``` like *cavalry* or *melee* that other units can
-check against for special effects (stuff like anti-cavalry dealing more damage)
+> **Note**: The ```armor``` and ```max_health``` values are optional to use. Also, units can have ```attributes``` like *cavalry* or *melee* that other units can check against for special effects (stuff like anti-cavalry dealing more damage)
 
 2. Check if the unit is imported to ```unit_management.py```.
 
-3. Add a new ```elif``` statement with the unit's user-friendly name and instantiate that unit to the ```created_unit``` variable.
+3. Add the unit's user-friendly name to ```all_units_map```.
 
 **For more info on modding, check the code documentation.**
 
