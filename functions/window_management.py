@@ -64,7 +64,7 @@ def display_unit_list():
     if not unit_list_window_opened:
         unit_help_window = tk.Toplevel(main_window)
 
-        tk.Label(unit_help_window, text=f'Available units: {", ".join([unit.__name__.replace("_", " ").title() for unit in all_units_map.values()])}').pack()
+        tk.Label(unit_help_window, text=f'Available units: {", ".join([unit.__name__.replace("_", " ") for unit in all_units_map.values()])}').pack()
         tk.Button(unit_help_window, text = 'OK', command=close).pack()
 
         unit_list_window_opened = True

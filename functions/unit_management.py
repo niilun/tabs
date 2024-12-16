@@ -65,6 +65,9 @@ def create_unit(unit, team):
     '''
     global next_available_id, unit_counter
 
+    # Lowercase unit input for easier processing
+    unit = unit.lower()
+
     if unit not in all_units_map:
         raise Exception('Unit does not exist or is not declared!')
     
@@ -123,9 +126,9 @@ def cleanup_units():
             if unit.id == next_available_id:
                 next_available_id -= 1
             try:
-                logging.debug(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
+                logging.info(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
             except Exception:
-                logging.debug(f'Unit <name missing> (ID: {unit.id}) dead, removing')
+                logging.warning(f'Error when parsing Unit name or ID but it is dead, removing')
             unit_counter -= 1
             active_units_team_1.remove(unit)
 
@@ -134,8 +137,8 @@ def cleanup_units():
             if unit.id == next_available_id:
                 next_available_id -= 1
             try:
-                logging.debug(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
+                logging.info(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
             except Exception:
-                logging.debug(f'Error when parsing Unit name or ID but it is dead, removing')
+                logging.warning(f'Error when parsing Unit name or ID but it is dead, removing')
             unit_counter -= 1
             active_units_team_2.remove(unit)
