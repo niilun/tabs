@@ -1,5 +1,6 @@
 import logging
 from functions.unit_management import all_units_map, all_eras_map
+from constants import status_effects
 from functions.window_management import display_main_window
 
 version = '0.2.0pre-2'
@@ -22,6 +23,10 @@ def main():
         era_names.append(era.replace('_', ' '))
     logging.debug(f'Loaded era map with {len(all_eras_map)} entries: {era_names}')
 
+    logging.debug(f'Loaded status effects:')
+    for status_effect in status_effects:
+        logging.debug(f'{status_effect.value[0]}: {status_effect.value[1]}')
+    
     display_main_window()
  
     # Called once the window loop (everything) shuts down
