@@ -80,8 +80,6 @@ def display_main_window():
     main_window.geometry('920x640')
     main_window.title('TABS')
 
-    # Left pane (unit select & info)
-    # left_pane = tk.Frame(main_window)
     unit_select_input = tk.Entry()
     unit_select_input.pack()
 
@@ -93,7 +91,7 @@ def display_main_window():
 
     tk.Button(text='Unit list', command=display_unit_list).pack()
 
-    tk.Label(text = f'v{version}').pack()
+    tk.Label(text = f'v{version}').pack(side = tk.BOTTOM)
 
     logging.debug('Running main window loop')
     main_window.mainloop()

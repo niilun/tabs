@@ -11,25 +11,21 @@ def main():
     '''Internal function'''
     logging.debug(f'TABS Version {version} | https://github.com/Leowondeh/TABS')
 
-    # Get unit names and make them readable in console
+    # get unit names and make them readable in console
     unit_names = []
     for unit in all_units_map.values():
         unit_names.append(unit.__name__.replace('_', ' '))
     logging.debug(f'Loaded units map with {len(all_units_map)} entries: {unit_names}')
 
-    # Same with era names
+    # same with era names
     era_names = []
     for era in all_eras_map.keys():
         era_names.append(era.replace('_', ' '))
     logging.debug(f'Loaded era map with {len(all_eras_map)} entries: {era_names}')
 
-    logging.debug(f'Loaded status effects:')
-    for status_effect in status_effects:
-        logging.debug(f'{status_effect.value[0]}: {status_effect.value[1]}')
+    logging.debug(f'Loaded {len(status_effects)} status effects')
     
     display_main_window()
- 
-    # Called once the window loop (everything) shuts down
     logging.shutdown()
 
 if __name__ == '__main__':
