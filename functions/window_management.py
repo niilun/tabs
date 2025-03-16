@@ -84,13 +84,14 @@ def display_main_window():
     unit_select_input.pack()
 
     tk.Button(text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).pack()
-
     tk.Button(text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 2)).pack()
 
     tk.Button(text = 'Take next action', command=take_next_action_ui_wrapper).pack()
 
     tk.Button(text='Unit list', command=display_unit_list).pack()
 
+    # Unit info bars
+    tk.Button(text='Quit', command=quit).pack()
     tk.Label(text = f'v{version}').pack(side = tk.BOTTOM)
 
     logging.debug('Running main window loop')

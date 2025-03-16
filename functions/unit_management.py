@@ -37,8 +37,6 @@ next_available_id = 1
 unit_counter = 1
 turn_counter = 1
 
-max_units_on_field = 10
-
 active_units_team_1 = []
 active_units_team_2 = []
 
@@ -74,8 +72,12 @@ def create_unit(unit, team):
     created_unit = all_units_map[unit.lower()](next_available_id)
 
     if team == 1:
+        if len(active_units_team_1) >= 5:
+            raise Exception('Team 1 is full!')
         active_units_team_1.append(created_unit)
     elif team == 2:
+        if len(active_units_team_2) >= 5:
+            raise Exception('Team 2 is full!')
         active_units_team_2.append(created_unit)
     else:
         raise Exception(f"Invalid team call {team}")
