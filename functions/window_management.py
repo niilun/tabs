@@ -85,8 +85,11 @@ def display_main_window():
     unit_select_input = tk.Entry()
     unit_select_input.pack()
 
-    tk.Button(text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).pack()
-    tk.Button(text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 2)).pack()
+    # Summon buttons for both teams
+    summon_buttons = tk.Frame(main_window)
+    summon_buttons.pack()
+    tk.Button(summon_buttons, text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).grid(row = 0, column = 0)
+    tk.Button(summon_buttons, text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 2)).grid(row = 0, column = 1)
 
     tk.Button(text = 'Take next action', command=take_next_action_ui_wrapper).pack()
 
@@ -106,7 +109,7 @@ def display_main_window():
             unit_image.img = tk.PhotoImage(file='resources/units/placeholder.png')
             unit_image.config(image=unit_image.img)
 
-            unit_health = tk.Label(frame, text='100/100')
+            unit_health = tk.Canvas(frame, height = 10, width = 60, background = 'green')
             unit_name = tk.Label(frame, text = 'Empty slot')
 
             unit_image.pack()
