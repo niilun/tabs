@@ -1,4 +1,4 @@
-import logging, uuid
+import logging
 from functions.unit_management import all_units_map, all_eras_map
 from constants import status_effects
 from functions.window_management import display_main_window

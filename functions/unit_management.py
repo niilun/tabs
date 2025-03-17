@@ -85,8 +85,8 @@ def create_unit(unit, team):
     unit_counter += 1
 
     logging.debug(f'''New unit lists:
-                      Team 1: {active_units_team_1}
-                      Team 2: {active_units_team_2}''')
+        Team 1: {active_units_team_1}
+        Team 2: {active_units_team_2}''')
 
 def take_next_action():
     '''Calculates the next unit that's supposed to take it's turn and runs it's take_turn() method'''

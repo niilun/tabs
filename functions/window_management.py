@@ -107,7 +107,7 @@ def display_main_window():
             unit_image.config(image=unit_image.img)
 
             unit_health = tk.Label(frame, text='100/100')
-            unit_name = tk.Label(frame, text = 'Slot empty')
+            unit_name = tk.Label(frame, text = 'Empty slot')
 
             unit_image.pack()
             unit_name.pack()
@@ -119,9 +119,9 @@ def display_main_window():
                 'health': unit_health
             }
 
-            if i == 1:
+            if i == 0:
                 widgets_team_1.append(widget_dict)
-            else:
+            elif i == 1:
                 widgets_team_2.append(widget_dict)
             
             frame.grid(row=i, column=j)
