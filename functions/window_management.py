@@ -5,9 +5,13 @@ import tkinter as tk
 unit_list_window_opened = False
 any_error_window_opened = False
 
+# Holder for battle info widgets
+widgets_team_1 = []
+widgets_team_2 = []
+
 # Wrappers for game actions
 def create_unit_ui_wrapper(selected_unit, team):
-    '''Internal function'''
+    '''Handler function to run create_unit()'''
     from functions.unit_management import create_unit
     global main_window  
 
@@ -23,7 +27,7 @@ def create_unit_ui_wrapper(selected_unit, team):
         display_error_window(f'Error when creating unit: \n{error_message}')
     
 def take_next_action_ui_wrapper():
-    '''Internal function'''
+    '''Handler function to run take_next_action()'''
     from functions.unit_management import take_next_action
     global main_window
 
@@ -34,21 +38,19 @@ def take_next_action_ui_wrapper():
 
 # UI
 def display_error_window(error_message):
-        '''
-        Displays a standard error window with message error_message.
-        '''
-        global main_window, any_error_window_opened
+    '''Displays a standard error window with message error_message.'''
+    global main_window, any_error_window_opened
 
-        def close():
-            global any_error_window_opened
+    def close():
+        global any_error_window_opened
 
-            any_error_window_opened = False
-            error_window.destroy()
+        any_error_window_opened = False
+        error_window.destroy()
 
-        if not any_error_window_opened:
-            error_window = tk.Toplevel(main_window)
-            tk.Label(error_window, text=f"{error_message}").pack()
-            tk.Button(error_window, text = 'Close', command=close).pack()
+    if not any_error_window_opened:
+        error_window = tk.Toplevel(main_window)
+        tk.Label(error_window, text=f"{error_message}").pack()
+        tk.Button(error_window, text = 'Close', command=close).pack()
 
 def display_unit_list():
     '''Displays all loaded units in a generic info window.'''
@@ -70,7 +72,7 @@ def display_unit_list():
         unit_list_window_opened = True
 
 def display_main_window():
-    '''Internal function'''
+    '''Main function to create the game tkinter window'''
     from main import version
 
     global unit_select_input, main_window
@@ -91,9 +93,42 @@ def display_main_window():
     tk.Button(text='Unit list', command=display_unit_list).pack()
 
     # Unit info bars
+    battle_info = tk.Frame(main_window, pady = 20)
+    battle_info.pack()
+
+    # Create two rows of 5 frames linked to battle_info
+    for i in range(2):
+        for j in range(5):
+            frame = tk.Frame(battle_info)
+            
+            # Use a placeholder file until an actual unit fills the slot
+            unit_image = tk.Label(frame)
+            unit_image.img = tk.PhotoImage(file='resources/units/placeholder.png')
+            unit_image.config(image=unit_image.img)
+
+            unit_health = tk.Label(frame, text='100/100')
+            unit_name = tk.Label(frame, text = 'Slot empty')
+
+            unit_image.pack()
+            unit_name.pack()
+            unit_health.pack()
+            
+            widget_dict = {
+                'image': unit_image,
+                'name': unit_name,
+                'health': unit_health
+            }
+
+            if i == 1:
+                widgets_team_1.append(widget_dict)
+            else:
+                widgets_team_2.append(widget_dict)
+            
+            frame.grid(row=i, column=j)
+
+    # Quit button and version indicator
     tk.Button(text='Quit', command=quit).pack()
     tk.Label(text = f'v{version}').pack(side = tk.BOTTOM)
 
     logging.debug('Running main window loop')
     main_window.mainloop()
-    

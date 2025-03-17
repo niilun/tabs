@@ -2,7 +2,7 @@ from enum import Enum
 
 class status_effects(Enum):
     """
-    These effects can be applied to units during gameplay and have various impacts on their abilities and actions.
+    These effects can be applied to units and have various impacts on their abilities and actions.
 
     They stop affecting the next turn after they are cleared
     off the unit's active effects, or after a specific period
@@ -14,22 +14,24 @@ class status_effects(Enum):
     """
 
     # Statuses that inflict self damage
-    BURN = ["Burned", "takes damage every turn"]
-    POISON = ["Poisoned", "takes damage every turn"]
-    VENOM = ["Envenomed", "takes stronger damage every turn"]
-    CONFUSED = ["Confused", "takes damage when attacking"]
-    BLEEDING = ["Bleeding", "loses health gradually"]
+    BURN = ["Burned", "Takes damage every turn"]
+    POISON = ["Poisoned", "Takes damage every turn"]
+    VENOM = ["Envenomed", "Takes ramping damage every turn"]
+    CONFUSED = ["Confused", "Takes damage when attacking"]
+    BLEEDING = ["Bleeding", "Loses health gradually"]
 
     # Statuses that prevent actions
-    DROWSY = ["Drowsy", "getting drowsy..."]
-    SLEEPY = ["Sleepy", "about to go Asleep!"]
-    ASLEEP = ["Asleep", "cannot act"]
 
-    STUN = ["Stunned", "cannot act"]
-    FROZEN = ["Frozen", "cannot act and takes increased damage from physical attacks"]
-    PARALYZED = ["Paralyzed", "has a chance to fail actions"]
-    DEFENCELESS = ["Defenceless", "cannot 'Defend' and their armor gets penetrated by attacks"]
+    STUN = ["Stunned", "Cannot act"]
+    FROZEN = ["Frozen", "Cannot act and takes double damage from the next attack, after which the effect is removed"]
+    PARALYZED = ["Paralyzed", "May fail actions"]
+    DEFENCELESS = ["Defenceless", "Cannot 'Defend' and armor gets penetrated by attacks"]
+
+    # The intent is to have Drowsy -> Sleepy -> Asleep be a weaker version of Stun, as it takes 3 turns to actually take effect.
+    DROWSY = ["Drowsy", "Getting drowsy..."]
+    SLEEPY = ["Sleepy", "About to go Asleep!"]
+    ASLEEP = ["Asleep", "Cannot act"]
     
     # Statuses that affect specific actions
-    BLINDED = ["Dazed", "may fail attacks"]
-    SILENCED = ["Silenced", "cannot use abilities"]
+    BLINDED = ["Dazed", "May fail attacks"]
+    SILENCED = ["Silenced", "Cannot use abilities"]

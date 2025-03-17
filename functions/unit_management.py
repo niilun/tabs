@@ -58,12 +58,10 @@ def create_unit(unit, team):
         First, if the unit is in a different file, 
         make sure to import it in unit_management.py.
         
-        Then, add a new elif statement with the unit's name and instantiate
-        that unit to the 'created_unit' variable.
+        Then, add the unit to all_units_map with it's user-friendly name.
     '''
     global next_available_id, unit_counter
 
-    # Lowercase unit input for easier processing
     unit = unit.lower()
 
     if unit not in all_units_map:
@@ -86,13 +84,12 @@ def create_unit(unit, team):
     next_available_id += 1
     unit_counter += 1
 
-    # TODO: Remove after UI overhaul (why debug when can have big image)
     logging.debug(f'''New unit lists:
                       Team 1: {active_units_team_1}
                       Team 2: {active_units_team_2}''')
 
 def take_next_action():
-    '''Internal function'''
+    '''Calculates the next unit that's supposed to take it's turn and runs it's take_turn() method'''
     global turn_counter, unit_counter
     turn_taken = False
 
@@ -119,7 +116,7 @@ def take_next_action():
     cleanup_units()
 
 def cleanup_units():
-    '''Internal function'''
+    '''Checks for dead units in both teams and removes them from the game'''
     global next_available_id, unit_counter, active_units_team_1, active_units_team_2
     
     # Use copies when iterating
@@ -127,10 +124,7 @@ def cleanup_units():
         if unit.current_health <= 0:
             if unit.id == next_available_id:
                 next_available_id -= 1
-            try:
-                logging.info(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
-            except Exception:
-                logging.warning(f'Error when parsing Unit name or ID but it is dead, removing')
+            logging.info(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
             unit_counter -= 1
             active_units_team_1.remove(unit)
 
@@ -138,9 +132,6 @@ def cleanup_units():
         if unit.current_health <= 0:
             if unit.id == next_available_id:
                 next_available_id -= 1
-            try:
-                logging.info(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
-            except Exception:
-                logging.warning(f'Error when parsing Unit name or ID but it is dead, removing')
+            logging.info(f'Unit {unit.unit_name} (ID: {unit.id}) dead, removing')
             unit_counter -= 1
             active_units_team_2.remove(unit)
