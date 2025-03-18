@@ -113,14 +113,22 @@ def take_next_action():
     
     if turn_counter <= get_total_active_units(1) and not turn_taken:
         logging.debug(f'Unit on team 1 turn counter {turn_counter} is taking turn')
-        active_units_team_1[turn_counter].take_turn(active_units_team_2)
+        try:
+            active_units_team_1[turn_counter].take_turn(active_units_team_2)
+        except Exception:
+            # If a unit dies and it's turn is the one coming up we account for it by +1-ing the counter
+            turn_counter += 1
 
         turn_counter += 1
         turn_taken = True
 
     if turn_counter <= get_total_active_units(1) + get_total_active_units(2) and not turn_taken:
         logging.debug(f'Unit on team 2 turn counter {turn_counter} is taking turn')
-        active_units_team_2[turn_counter - get_total_active_units(1)].take_turn(active_units_team_1)
+        try:
+            active_units_team_2[turn_counter - get_total_active_units(1)].take_turn(active_units_team_1)
+        except Exception:
+            # If a unit dies and it's turn is the one coming up we account for it by +1-ing the counter
+            turn_counter += 1
 
         turn_counter += 1
         turn_taken = True
