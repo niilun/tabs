@@ -1,4 +1,4 @@
-![TABS Logo](img/logo.20.png)
+![TABS Logo](resources/logos/logo.20.png)
 
 **TABS** is a simulation game, in which you pit various units against each other to fight! It's highly customizable, allowing anyone to add their own units and abilities which interact easily with the game.
 

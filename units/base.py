@@ -5,18 +5,16 @@ class base_unit():
     '''
     Base model for units, does not have stats.
 
-    DO NOT modify it's stats or add new abilities, instead create a new unit inheriting from base_unit.
+    DO NOT modify it's stats or add new abilities (because it'll change all units based off it), instead create a new unit inheriting from base_unit.
     '''
-    def __init__(self, id):
+    def __init__(self):
         self.unit_name = "Base unit"
-        self.attributes = []
-        self.id = id
         self.current_health = 1
         self.max_health = 1
         self.armor = 0
         self.attack_damage = 0
 
-    def take_turn(self, enemies):
+    def take_turn(self, enemies: dict):
         '''
         Default AI
 
@@ -26,14 +24,16 @@ class base_unit():
             self.ability_defend()
             return
         
-        # Target is the enemy with lowest HP. If there are 2+ units with the same HP, the lowest ID gets selected
-        min_health_in_enemy_team = min([enemy.current_health for enemy in enemies])
-        for enemy in enemies:
-            if enemy.current_health == min_health_in_enemy_team:
+        # Target is the enemy with lowest HP. If there are 2+ units with the same HP, the first
+        min_health_in_enemy_team = min([enemy.current_health for enemy in enemies.values() if enemy != None])
+        for enemy in enemies.values():
+            if enemy == None:
+                pass
+            elif enemy.current_health == min_health_in_enemy_team:
                 target = enemy
         target.get_attacked(self.attack_damage)
         
-        logging.debug(f"{self.unit_name} attacked unit ID {target.id} ({target.unit_name}), dealing {self.attack_damage} damage. (HP now {target.current_health})")
+        logging.debug(f"{self.unit_name} attacked unit {target.unit_name}, dealing {self.attack_damage} damage. (HP now {target.current_health})")
 
     def get_attacked(self, damage):
         '''

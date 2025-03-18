@@ -6,9 +6,8 @@ import logging
 # +---------------------+
 
 class spearman(base_unit):
-    def __init__(self, id):
+    def __init__(self):
         self.unit_name = 'Spearman'
-        self.id = id
         self.current_health = 70
         self.max_health = 70
         self.armor = 0

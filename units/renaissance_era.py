@@ -5,9 +5,8 @@ from .base import *
 # +-------------------------+
 
 class musketman(base_unit):
-    def __init__(self, id):
+    def __init__(self):
         self.unit_name = "Musketman"
-        self.id = id
         self.current_health = 110
         self.max_health = 110
         self.armor = 0

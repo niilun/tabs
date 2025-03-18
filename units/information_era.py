@@ -5,9 +5,8 @@ from .base import *
 # +-------------------------+
 
 class mechanized_infantry(base_unit):
-    def __init__(self, id):
+    def __init__(self):
         self.unit_name = "Mechanized Infantry"
-        self.id = id
         self.current_health = 200
         self.max_health = 200
         self.armor = 0

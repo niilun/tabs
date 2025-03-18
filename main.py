@@ -3,7 +3,7 @@ from functions.unit_management import all_units_map, all_eras_map
 from constants import status_effects
 from functions.window_management import display_main_window
 
-version = f'0.3.0pre-1 DEVELOPER BUILD - EXPERIMENTAL!'
+version = f'0.4.0'
 
 logging.basicConfig(level=logging.DEBUG, format='%(levelname)s | %(message)s')
 
