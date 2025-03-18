@@ -1,4 +1,4 @@
-import logging
+import logging, sys
 import tkinter as tk
 
 # Variables to prevent duplicate windows
@@ -71,6 +71,26 @@ def display_unit_list():
 
         unit_list_window_opened = True
 
+def update_scoreboard():
+    # TODO: when unit icons are available update them
+    from functions.unit_management import active_units_team_1, active_units_team_2
+    for slot, unit in active_units_team_1.items():
+        if unit == None:
+            widgets_team_1[slot - 1]['name'].config(text = 'Slot empty')
+            widgets_team_1[slot - 1]['health'].config(background = 'red')
+        else:
+            widgets_team_1[slot - 1]['name'].config(text = unit.unit_name)
+            widgets_team_1[slot - 1]['health'].config(background = 'green')
+    
+    for slot, unit in active_units_team_2.items():
+        if unit == None:
+            widgets_team_2[slot - 1]['name'].config(text = 'Slot empty')
+            widgets_team_2[slot - 1]['health'].config(background = 'red')
+        else:
+            widgets_team_2[slot - 1]['name'].config(text = unit.unit_name)
+            widgets_team_2[slot - 1]['health'].config(background = 'green')
+    logging.info('Updated battle scoreboard.')
+
 def display_main_window():
     '''Main function to create the game tkinter window'''
     from main import version
@@ -109,7 +129,7 @@ def display_main_window():
             unit_image.img = tk.PhotoImage(file='resources/units/placeholder.png')
             unit_image.config(image=unit_image.img)
 
-            unit_health = tk.Canvas(frame, height = 10, width = 60, background = 'green')
+            unit_health = tk.Canvas(frame, height = 10, width = 60, background = 'red')
             unit_name = tk.Label(frame, text = 'Empty slot')
 
             unit_image.pack()
@@ -130,7 +150,7 @@ def display_main_window():
             frame.grid(row=i, column=j)
 
     # Quit button and version indicator
-    tk.Button(text='Quit', command=quit).pack()
+    tk.Button(text='Quit', command=sys.exit).pack()
     tk.Label(text = f'v{version}').pack(side = tk.BOTTOM)
 
     logging.debug('Running main window loop')

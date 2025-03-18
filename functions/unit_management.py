@@ -34,7 +34,7 @@ all_eras_map = {
 # Unit storage
 turn_counter = 1
 
-active_units_t1 = {
+active_units_team_1 = {
     1: None,
     2: None,
     3: None,
@@ -42,7 +42,7 @@ active_units_t1 = {
     5: None
 }
 
-active_units_t2 = {
+active_units_team_2 = {
     1: None,
     2: None,
     3: None,
@@ -70,7 +70,7 @@ def create_unit(unit, team):
         
         Then, add the unit to all_units_map with it's user-friendly name.
     '''
-
+    from functions.window_management import update_scoreboard
     unit = unit.lower()
 
     if unit not in all_units_map:
@@ -83,19 +83,20 @@ def create_unit(unit, team):
             raise Exception('Team 1 is full!')
         
         logging.debug(f'Created unit {unit} in slot {find_first_available_slot(1)}')
-        active_units_t1[find_first_available_slot(1)] = created_unit
+        active_units_team_1[find_first_available_slot(1)] = created_unit
     elif team == 2:
         if get_total_active_units(2) >= 5:
             raise Exception('Team 2 is full!')
 
         logging.debug(f'Created unit {unit} in slot {find_first_available_slot(2)}')
-        active_units_t2[find_first_available_slot(2)] = created_unit
+        active_units_team_2[find_first_available_slot(2)] = created_unit
     else:
         raise Exception(f"Invalid team call {team}")
 
+    update_scoreboard()
     logging.debug(f'''New unit lists:
-        Team 1, {get_total_active_units(1)} active: {active_units_t1}
-        Team 2, {get_total_active_units(2)} active: {active_units_t2}''')
+        Team 1, {get_total_active_units(1)} active: {active_units_team_1}
+        Team 2, {get_total_active_units(2)} active: {active_units_team_2}''')
 
 def take_next_action():
     '''Calculates the next unit that's supposed to take its turn and runs its take_turn() method'''
@@ -112,14 +113,14 @@ def take_next_action():
     
     if turn_counter <= get_total_active_units(1) and not turn_taken:
         logging.debug(f'Unit on team 1 turn counter {turn_counter} is taking turn')
-        active_units_t1[turn_counter].take_turn(active_units_t2)
+        active_units_team_1[turn_counter].take_turn(active_units_team_2)
 
         turn_counter += 1
         turn_taken = True
 
     if turn_counter <= get_total_active_units(1) + get_total_active_units(2) and not turn_taken:
         logging.debug(f'Unit on team 2 turn counter {turn_counter} is taking turn')
-        active_units_t2[turn_counter - get_total_active_units(1)].take_turn(active_units_t1)
+        active_units_team_2[turn_counter - get_total_active_units(1)].take_turn(active_units_team_1)
 
         turn_counter += 1
         turn_taken = True
@@ -128,35 +129,37 @@ def take_next_action():
 
 def cleanup_units():
     '''Checks for dead units in both teams and removes them from the game'''
-
+    from functions.window_management import update_scoreboard
+    
     # Use copies when iterating
     counter = 1
-    for unit in active_units_t1.copy().values():
+    for unit in active_units_team_1.copy().values():
         if unit == None:
             pass
         elif unit.current_health <= 0:
             logging.info(f'Unit {unit.unit_name} in team 1, slot {counter} dead, removing')
-            active_units_t1[counter] = None
+            active_units_team_1[counter] = None
         counter += 1
 
     counter = 1
-    for unit in active_units_t2.copy().values():
+    for unit in active_units_team_2.copy().values():
         if unit == None:
             pass
         elif unit.current_health <= 0:
             logging.info(f'Unit {unit.unit_name} in team 2, slot {counter} dead, removing')
-            active_units_t2[counter] = None
+            active_units_team_2[counter] = None
         counter += 1
+    update_scoreboard()
 
 def find_first_available_slot(team: int) -> int:
     counter = 1
     if team == 1:
-        for slot in active_units_t1.values():
+        for slot in active_units_team_1.values():
             if slot == None:
                 return counter
             counter += 1
     elif team == 2:
-        for slot in active_units_t2.values():
+        for slot in active_units_team_2.values():
             if slot == None:
                 return counter
             counter += 1
@@ -166,11 +169,11 @@ def find_first_available_slot(team: int) -> int:
 def get_total_active_units(team: int) -> int:
     total = 0
     if team == 1:
-        for slot in active_units_t1.values():
+        for slot in active_units_team_1.values():
             if slot != None:
                 total += 1
     elif team == 2:
-        for slot in active_units_t2.values():
+        for slot in active_units_team_2.values():
             if slot != None:
                 total += 1
     else:
