@@ -89,7 +89,7 @@ def update_scoreboard():
         else:
             widgets_team_2[slot - 1]['name'].config(text = unit.unit_name)
             widgets_team_2[slot - 1]['health'].config(background = 'green')
-    logging.info('Updated battle scoreboard')
+    logging.info('Updated battle scoreboard.')
 
 def display_main_window():
     '''Main function to create the game tkinter window'''
@@ -153,5 +153,5 @@ def display_main_window():
     tk.Button(text='Quit', command=sys.exit).pack()
     tk.Label(text = f'v{version}').pack(side = tk.BOTTOM)
 
-    logging.debug('Running main window loop')
+    logging.info('Main window loaded.')
     main_window.mainloop()

@@ -88,15 +88,12 @@ def create_unit(unit, team):
         if get_total_active_units(2) >= 5:
             raise Exception('Team 2 is full!')
 
-        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(2)}')
+        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(2)} on team {team}')
         active_units_team_2[find_first_available_slot(2)] = created_unit
     else:
         raise Exception(f"Invalid team call {team}")
 
     update_scoreboard()
-    logging.debug(f'''New unit lists:
-        Team 1, {get_total_active_units(1)} active: {active_units_team_1}
-        Team 2, {get_total_active_units(2)} active: {active_units_team_2}''')
 
 def take_next_action():
     '''Calculates the next unit that's supposed to take its turn and runs its take_turn() method'''
@@ -145,7 +142,7 @@ def cleanup_units():
         if unit == None:
             pass
         elif unit.current_health <= 0:
-            logging.info(f'Unit {unit.unit_name} in team 1, slot {counter} dead, removing')
+            logging.info(f'Unit {unit.unit_name} in slot {counter} in team 1 dead, removing')
             active_units_team_1[counter] = None
         counter += 1
 
@@ -154,7 +151,7 @@ def cleanup_units():
         if unit == None:
             pass
         elif unit.current_health <= 0:
-            logging.info(f'Unit {unit.unit_name} in team 2, slot {counter} dead, removing')
+            logging.info(f'Unit {unit.unit_name} in slot {counter} in team 2 dead, removing')
             active_units_team_2[counter] = None
         counter += 1
     update_scoreboard()
