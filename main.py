@@ -3,7 +3,7 @@ from functions.unit_management import all_units_map, all_eras_map
 from constants import status_effects
 from functions.window_management import display_main_window
 
-version = f'0.4.0'
+version = '0.4.0'
 
 logging.basicConfig(level=logging.DEBUG, format='%(levelname)s | %(message)s')
 
@@ -11,7 +11,6 @@ def main():
     '''Internal function'''
     logging.info(f'TABS Version {version}')
 
-    # get unit/era/status effect names and make them readable in console
     unit_names = []
     for unit in all_units_map.values():
         unit_names.append(unit.__name__.replace('_', ' '))
