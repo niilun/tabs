@@ -72,6 +72,7 @@ def display_unit_list():
         unit_list_window_opened = True
 
 def update_scoreboard():
+    '''Updates the scoreboard (battle info), checks for new units or death of already existing ones.'''
     # TODO: when unit icons are available update them
     from functions.unit_management import active_units_team_1, active_units_team_2
     for slot, unit in active_units_team_1.items():

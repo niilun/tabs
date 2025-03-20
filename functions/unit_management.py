@@ -157,6 +157,7 @@ def cleanup_units():
     update_scoreboard()
 
 def find_first_available_slot(team: int) -> int:
+    '''Finds the first available slot going from left to right for team 1 or 2.'''
     counter = 1
     if team == 1:
         for slot in active_units_team_1.values():
@@ -172,6 +173,7 @@ def find_first_available_slot(team: int) -> int:
         raise Exception(f'Invalid team call {team} in {__name__}')
 
 def get_total_active_units(team: int) -> int:
+    '''Gets the total number of active units for team 1 or 2.'''
     total = 0
     if team == 1:
         for slot in active_units_team_1.values():

@@ -29,11 +29,11 @@ in it's `__init__` method.
 
 ## Building an executable
 
-You can package up the code into **executable form** using ```pyinstaller```.
+You can package up the code into **executable form** using ```pyinstaller```. However, you **still** need the ```resources``` folder present with the executable.
 
 1. If you don't have them installed already, run ```pip install -r requirements.txt``` to install all requirements.
 
-2. Run the build scripts from ```build_scripts/```. Use ```build.sh``` on Linux or ```build.bat``` on Windows. 
+2. Run the build scripts from ```build_scripts/```.
 
 ## To-do list
 
