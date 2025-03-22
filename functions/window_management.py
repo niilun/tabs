@@ -73,23 +73,42 @@ def display_unit_list():
 
 def update_scoreboard():
     '''Updates the scoreboard (battle info), checks for new units or death of already existing ones.'''
-    # TODO: when unit icons are available update them
     from functions.unit_management import active_units_team_1, active_units_team_2
-    for slot, unit in active_units_team_1.items():
-        if unit == None:
-            widgets_team_1[slot - 1]['name'].config(text = 'Slot empty')
-            widgets_team_1[slot - 1]['health'].config(background = 'red')
-        else:
-            widgets_team_1[slot - 1]['name'].config(text = unit.unit_name)
-            widgets_team_1[slot - 1]['health'].config(background = 'green')
     
-    for slot, unit in active_units_team_2.items():
-        if unit == None:
-            widgets_team_2[slot - 1]['name'].config(text = 'Slot empty')
-            widgets_team_2[slot - 1]['health'].config(background = 'red')
+    for slot, unit in active_units_team_1.items():
+        info_slot = widgets_team_1[slot - 1]
+        if unit is None:
+            info_slot['name'].config(text = 'Empty slot')
+            info_slot['health'].delete('all')
+            info_slot['health'].create_rectangle(0, 0, 60, 10, fill = 'red')
         else:
-            widgets_team_2[slot - 1]['name'].config(text = unit.unit_name)
-            widgets_team_2[slot - 1]['health'].config(background = 'green')
+            unit_health_percent = unit.current_health / unit.max_health
+            info_slot['name'].config(text=unit.unit_name)
+            info_slot['health'].delete('all')
+
+            info_slot['health'].create_rectangle(0, 0, 60 * unit_health_percent, 10, fill = 'green')
+            info_slot['health'].create_rectangle(0, 60 * unit_health_percent, 0, 10, fill = 'red')
+            if unit.armor > 0:
+                unit_armor_percent = unit.armor / unit.max_health
+                info_slot['health'].create_rectangle(0, 0, 60 * unit_armor_percent, 10, fill = 'yellow')
+
+    for slot, unit in active_units_team_2.items():
+        info_slot = widgets_team_2[slot - 1]
+        if unit is None:
+            info_slot['name'].config(text = 'Empty slot')
+            info_slot['health'].delete('all')
+            info_slot['health'].create_rectangle(0, 0, 60, 10, fill = 'red')
+        else:
+            unit_health_percent = unit.current_health / unit.max_health
+
+            info_slot['name'].config(text=unit.unit_name)
+            info_slot['health'].delete('all')
+            info_slot['health'].create_rectangle(0, 0, 60 * unit_health_percent, 10, fill = 'green')
+            info_slot['health'].create_rectangle(0, 60 * unit_health_percent, 0, 10, fill = 'red')
+            if unit.armor > 0:
+                unit_armor_percent = unit.armor / unit.max_health
+                info_slot['health'].create_rectangle(0, 0, 60 * unit_armor_percent, 10, fill = 'yellow')
+
     logging.info('Updated battle scoreboard.')
 
 def display_main_window():
@@ -124,7 +143,7 @@ def display_main_window():
     for i in range(2):
         for j in range(5):
             frame = tk.Frame(battle_info)
-            
+
             # Use a placeholder file until an actual unit fills the slot
             unit_image = tk.Label(frame)
             unit_image.img = tk.PhotoImage(file='resources/units/placeholder.png')

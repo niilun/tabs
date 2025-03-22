@@ -27,7 +27,6 @@ all_eras_map = {
     'renaissance': musketman,
     'industrial': line_infantry,
     'modern': infantry,
-    'atomic': None,
     'information': mechanized_infantry
 }
 
