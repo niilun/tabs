@@ -1,9 +1,6 @@
 import logging, sys
 import tkinter as tk
-
-# Variables to prevent duplicate windows
-unit_list_window_opened = False
-any_error_window_opened = False
+from tkinter import messagebox
 
 # Holder for battle info widgets
 widgets_team_1 = []
@@ -15,6 +12,7 @@ def create_unit_ui_wrapper(selected_unit, team):
     from functions.unit_management import create_unit
     global main_window  
 
+    # Nudge the user instead of displaying an error message if input is empty
     invalid_inputs = ['', ' ', 'help']
 
     if selected_unit in invalid_inputs:
@@ -24,8 +22,8 @@ def create_unit_ui_wrapper(selected_unit, team):
     try:
         create_unit(selected_unit, team)
     except Exception as error_message:
-        display_error_window(f'Error when creating unit: \n{error_message}')
-    
+        messagebox.showerror('Error while creating unit', error_message)
+
 def take_next_action_ui_wrapper():
     '''Handler function to run take_next_action()'''
     from functions.unit_management import take_next_action
@@ -34,42 +32,13 @@ def take_next_action_ui_wrapper():
     try:
         take_next_action()
     except Exception as error_message:
-        display_error_window(f'Error when taking next action: \n{error_message}')
-
-# UI
-def display_error_window(error_message):
-    '''Displays a standard error window with message error_message.'''
-    global main_window, any_error_window_opened
-
-    def close():
-        global any_error_window_opened
-
-        any_error_window_opened = False
-        error_window.destroy()
-
-    if not any_error_window_opened:
-        error_window = tk.Toplevel(main_window)
-        tk.Label(error_window, text=f"{error_message}").pack()
-        tk.Button(error_window, text = 'Close', command=close).pack()
+        messagebox.showerror('Error while taking next action', error_message)
 
 def display_unit_list():
     '''Displays all loaded units in a generic info window.'''
     from functions.unit_management import all_units_map
-    global main_window, unit_list_window_opened
-
-    def close():
-        global unit_list_window_opened
-
-        unit_list_window_opened = False
-        unit_help_window.destroy()
     
-    if not unit_list_window_opened:
-        unit_help_window = tk.Toplevel(main_window)
-
-        tk.Label(unit_help_window, text=f'Available units: {", ".join([unit.__name__.replace("_", " ") for unit in all_units_map.values()])}').pack()
-        tk.Button(unit_help_window, text = 'OK', command=close).pack()
-
-        unit_list_window_opened = True
+    messagebox.showinfo('Unit list', f'Units available:\n{", ".join([unit.__name__.replace("_", " ") for unit in all_units_map.values()])}')
 
 def update_scoreboard():
     '''Updates the scoreboard (battle info), checks for new units or death of already existing ones.'''
