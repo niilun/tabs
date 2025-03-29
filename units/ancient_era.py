@@ -7,6 +7,8 @@ from .base import *
 class warrior(base_unit):
     def __init__(self):
         self.unit_name = "Warrior"
+        self.attributes = []
+        self.effects = {}
         self.current_health = 50
         self.max_health = 50
         self.armor = 0

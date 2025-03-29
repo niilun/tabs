@@ -9,10 +9,12 @@ class base_unit():
     '''
     def __init__(self):
         self.unit_name = "Base unit"
+        self.attributes = []
         self.current_health = 1
         self.max_health = 1
         self.armor = 0
         self.attack_damage = 0
+        self.effects = {}
 
     def take_turn(self, enemies: dict):
         '''

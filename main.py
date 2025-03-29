@@ -23,7 +23,7 @@ def main():
 
     effect_names = []
     for effect in status_effects:
-        effect_names.append(f'{effect.value[0].lower()}')
+        effect_names.append(f'{effect.value[0]}')
     logging.info(f'Loaded {len(status_effects)} status effects: {effect_names}')
     
     display_main_window()
