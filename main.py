@@ -3,13 +3,14 @@ from functions.unit_management import all_units_map, all_eras_map
 from constants import status_effects
 from functions.window_management import display_main_window
 
-version = '0.4.2'
+version = '0.4.3'
 
 logging.basicConfig(level=logging.DEBUG, format='%(levelname)s | %(message)s')
 
 def main():
     '''Internal function'''
     logging.info(f'TABS Version {version}')
+    logging.info('Report issues/suggest something at https://github.com/niilun/tabs')
 
     unit_names = []
     for unit in all_units_map.values():

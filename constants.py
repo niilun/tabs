@@ -4,9 +4,8 @@ class status_effects(Enum):
     """
     These effects can be applied to units and have various impacts on their abilities and actions.
 
-    They stop affecting the next turn after they are cleared
-    off the unit's active effects, or after a specific period
-    of time.
+    As a standard, effects stop the next turn after they are cleared
+    off the unit's active effects.
 
     IMPORTANT: units need to check for active effects on their own
     when their turn is called and apply the effects they choose to

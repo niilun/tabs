@@ -83,6 +83,7 @@ def update_scoreboard():
 def display_main_window():
     '''Main function to create the game tkinter window'''
     from main import version
+    from .unit_management import all_units_map
 
     global unit_select_input, main_window
 
@@ -90,19 +91,27 @@ def display_main_window():
 
     main_window.geometry('920x640')
     main_window.title('TABS')
+    
+    unit_select_frame = tk.Frame(main_window)
 
-    unit_select_input = tk.Entry()
-    unit_select_input.pack()
+    unit_select_scrollbar = tk.Scrollbar(unit_select_frame)
+    unit_select_input = tk.Listbox(unit_select_frame, yscrollcommand = unit_select_scrollbar.set)
+    for unit in all_units_map.keys():
+        unit_select_input.insert(tk.END, unit.title())
+    
+    unit_select_scrollbar.pack(side = 'right', fill = 'y')
+    unit_select_scrollbar.config(command = unit_select_input.yview)
+    unit_select_input.pack(side = 'left', fill = 'both', expand = True)
+
+    unit_select_frame.pack(side = 'left', fill = 'y',anchor = 'nw', expand = True)
 
     # Summon buttons for both teams
     summon_buttons = tk.Frame(main_window)
     summon_buttons.pack()
-    tk.Button(summon_buttons, text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 1)).grid(row = 0, column = 0)
-    tk.Button(summon_buttons, text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(), 2)).grid(row = 0, column = 1)
+    tk.Button(summon_buttons, text = 'Summon (team 1)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(unit_select_input.curselection()), 1)).grid(row = 0, column = 0)
+    tk.Button(summon_buttons, text = 'Summon (team 2)', command=lambda: create_unit_ui_wrapper(unit_select_input.get(unit_select_input.curselection()), 2)).grid(row = 0, column = 1)
 
     tk.Button(text = 'Take next action', command=take_next_action_ui_wrapper).pack()
-
-    tk.Button(text='Unit list', command=display_unit_list).pack()
 
     # Unit info bars
     battle_info = tk.Frame(main_window, pady = 20)
@@ -138,9 +147,18 @@ def display_main_window():
             
             frame.grid(row=i, column=j)
 
-    # Quit button and version indicator
-    tk.Button(text='Quit', command=sys.exit).pack()
-    tk.Label(text = f'v{version}').pack(side = tk.BOTTOM)
+    # Utilities
+    quit_button = tk.Button(text='Quit', command=sys.exit)
+    quit_button.place(relx = 0.19, rely = 1, x = 10, y = -20, anchor = 'w')
+    
+    settings_button = tk.Button(text = 'Settings')
+    settings_button.place(relx = 0.26, rely = 1, x = 10, y = -20, anchor = 'w')
+
+    unit_list_button = tk.Button(text = 'Unit list', command = display_unit_list)
+    unit_list_button.place(relx = 0.359, rely = 1, x = 10, y = -20, anchor = 'w')
+
+    version_indicator = tk.Label(text = f'v{version}')
+    version_indicator.place(relx = 0.93, rely = 1, x = 10, y = -15, anchor = 'w')
 
     logging.info('Main window loaded.')
     main_window.mainloop()

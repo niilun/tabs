@@ -16,7 +16,7 @@ all_units_map = {
     'musketman': musketman,
     'infantry': infantry,
     'line infantry': line_infantry,
-    'mechanized infantry': mechanized_infantry
+    'mechanized infantry': mechanized_infantry,
 }
 
 # Maps units to their specific eras (used in the future maybe, in a dropdown menu to select units)
