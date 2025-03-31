@@ -81,13 +81,13 @@ def create_unit(unit, team):
         if get_total_active_units(1) >= 5:
             raise Exception('Team 1 is full!')
         
-        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(1)}')
+        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(1)}.')
         active_units_team_1[find_first_available_slot(1)] = created_unit
     elif team == 2:
         if get_total_active_units(2) >= 5:
             raise Exception('Team 2 is full!')
 
-        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(2)} on team {team}')
+        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(2)} on team {team}.')
         active_units_team_2[find_first_available_slot(2)] = created_unit
     else:
         raise Exception(f"Invalid team call {team}")
@@ -108,22 +108,34 @@ def take_next_action():
         turn_counter = 1
     
     if turn_counter <= get_total_active_units(1) and not turn_taken:
-        logging.debug(f'Unit on team 1 turn counter {turn_counter} is taking turn')
+        logging.debug(f'Next turn: team 1, slot {turn_counter}.')
         try:
-            active_units_team_1[turn_counter].take_turn(active_units_team_2)
-        except Exception:
-            # If a unit dies and it's turn is the one coming up we account for it by +1-ing the counter
+            unit = active_units_team_1.get(turn_counter)
+            if unit:
+                unit.take_turn(active_units_team_2)
+            else:
+                turn_counter += 1
+                logging.debug('Skipping turn because of missing unit.')
+                take_next_action()
+        except Exception as e:
+            logging.error(f'Error when taking unit turn: {e}!')
             turn_counter += 1
 
         turn_counter += 1
         turn_taken = True
 
     if turn_counter <= get_total_active_units(1) + get_total_active_units(2) and not turn_taken:
-        logging.debug(f'Unit on team 2 turn counter {turn_counter} is taking turn')
+        logging.debug(f'Next turn: team 1, slot {turn_counter}.')
         try:
-            active_units_team_2[turn_counter - get_total_active_units(1)].take_turn(active_units_team_1)
-        except Exception:
-            # If a unit dies and it's turn is the one coming up we account for it by +1-ing the counter
+            unit = active_units_team_2.get(turn_counter - get_total_active_units(1))
+            if unit:
+                unit.take_turn(active_units_team_1)
+            else:
+                turn_counter += 1
+                logging.debug('Skipping turn because of missing unit.')
+                take_next_action()
+        except Exception as e:
+            logging.error(f'Error when taking unit turn: {e}!')
             turn_counter += 1
 
         turn_counter += 1
@@ -141,7 +153,7 @@ def cleanup_units():
         if unit == None:
             pass
         elif unit.current_health <= 0:
-            logging.info(f'Unit {unit.unit_name} in slot {counter} in team 1 dead, removing')
+            logging.info(f'Unit {unit.unit_name} in slot {counter} in team 1 dead, removing.')
             active_units_team_1[counter] = None
         counter += 1
 
@@ -150,7 +162,7 @@ def cleanup_units():
         if unit == None:
             pass
         elif unit.current_health <= 0:
-            logging.info(f'Unit {unit.unit_name} in slot {counter} in team 2 dead, removing')
+            logging.info(f'Unit {unit.unit_name} in slot {counter} in team 2 dead, removing.')
             active_units_team_2[counter] = None
         counter += 1
     update_scoreboard()
@@ -169,7 +181,7 @@ def find_first_available_slot(team: int) -> int:
                 return counter
             counter += 1
     else:
-        raise Exception(f'Invalid team call {team} in {__name__}')
+        raise Exception(f'Invalid team call {team} in {__name__}!')
 
 def get_total_active_units(team: int) -> int:
     '''Gets the total number of active units for team 1 or 2.'''
@@ -183,5 +195,5 @@ def get_total_active_units(team: int) -> int:
             if slot != None:
                 total += 1
     else:
-        raise Exception(f'Invalid team call {team} in {__name__}')
+        raise Exception(f'Invalid team call {team} in {__name__}!')
     return total

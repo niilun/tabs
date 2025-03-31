@@ -149,16 +149,16 @@ def display_main_window():
 
     # Utilities
     quit_button = tk.Button(text='Quit', command=sys.exit)
-    quit_button.place(relx = 0.19, rely = 1, x = 10, y = -20, anchor = 'w')
+    quit_button.place(relx = 0.20, rely = 1, y = -20, anchor = 'w')
     
     settings_button = tk.Button(text = 'Settings')
-    settings_button.place(relx = 0.26, rely = 1, x = 10, y = -20, anchor = 'w')
+    settings_button.place(relx = 0.265, rely = 1, y = -20, anchor = 'w')
 
     unit_list_button = tk.Button(text = 'Unit list', command = display_unit_list)
-    unit_list_button.place(relx = 0.359, rely = 1, x = 10, y = -20, anchor = 'w')
+    unit_list_button.place(relx = 0.36, rely = 1, y = -20, anchor = 'w')
 
     version_indicator = tk.Label(text = f'v{version}')
-    version_indicator.place(relx = 0.93, rely = 1, x = 10, y = -15, anchor = 'w')
+    version_indicator.place(relx = 0.94, rely = 1, y = -15, anchor = 'w')
 
     logging.info('Main window loaded.')
     main_window.mainloop()
