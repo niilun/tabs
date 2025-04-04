@@ -59,7 +59,6 @@ def create_unit(unit, team):
         Then, add the unit to all_units_map with it's user-friendly name.
     '''
     from functions.window_management import update_scoreboard
-    unit = unit.lower()
 
     if unit not in all_units_map:
         raise Exception('Unit does not exist or is not declared!')
