@@ -1,9 +1,5 @@
 from .base import *
 
-# +----------------------+
-# |  medieval era units  |
-# +----------------------+
-
 class man_at_arms(base_unit):
     def __init__(self):
         self.unit_name = "Man-at-Arms"

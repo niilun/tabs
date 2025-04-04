@@ -8,11 +8,11 @@ echo Moving executable to root folder...
 cd dist
 mv main ..
 cd ..
-mv main tabs
+mv main TABS-linux
 
 echo Removing leftover folders...
 rm -dr build
 rm -dr dist
 rm main.spec
 
-echo Build complete! To run go back to the root tabs folder and use './tabs'.
+echo Build complete! To run go back to the root tabs folder and use './TABS-linux.'

@@ -1,12 +1,9 @@
 from .base import *
 
-# +---------------------+
-# |  ancient era units  |
-# +---------------------+
-
 class warrior(base_unit):
     def __init__(self):
         self.unit_name = "Warrior"
+        self.abilities = ['Attack', 'Defend!']
         self.attributes = []
         self.effects = {}
         self.current_health = 50

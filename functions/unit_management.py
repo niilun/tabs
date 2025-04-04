@@ -1,33 +1,22 @@
 import logging
 
-from units.ancient_era import *
-from units.classical_era import *
-from units.medieval_era import *
-from units.renaissance_era import *
-from units.industrial_era import *
-from units.modern_era import *
-from units.information_era import *
+from units.warrior import *
+from units.spearman import *
+from units.man_at_arms import *
+from units.musketman import *
+from units.line_infantry import *
+from units.infantry import *
+from units.mechanized_infantry import *
 
-# Maps used when the user interacts with the game (add your units and/or eras here)
+# Maps used when the user interacts with the game (add your units here)
 all_units_map = {
-    'warrior': warrior,
-    'spearman': spearman,
-    'man at arms': man_at_arms,
-    'musketman': musketman,
-    'infantry': infantry,
-    'line infantry': line_infantry,
-    'mechanized infantry': mechanized_infantry,
-}
-
-# Maps units to their specific eras (used in the future maybe, in a dropdown menu to select units)
-all_eras_map = {
-    'ancient': warrior,
-    'classical': spearman,
-    'medieval': man_at_arms,
-    'renaissance': musketman,
-    'industrial': line_infantry,
-    'modern': infantry,
-    'information': mechanized_infantry
+    'Warrior': warrior,
+    'Spearman': spearman,
+    'Man-at-Arms': man_at_arms,
+    'Musketman': musketman,
+    'Infantry': infantry,
+    'Line Infantry': line_infantry,
+    'Mechanized Infantry': mechanized_infantry,
 }
 
 # Unit storage
@@ -95,7 +84,7 @@ def create_unit(unit, team):
     update_scoreboard()
 
 def take_next_action():
-    '''Calculates the next unit that's supposed to take its turn and runs its take_turn() method'''
+    '''Calculates the next unit that's supposed to take its turn and runs its take_turn() method.'''
     global turn_counter
     turn_taken = False
 
@@ -125,7 +114,7 @@ def take_next_action():
         turn_taken = True
 
     if turn_counter <= get_total_active_units(1) + get_total_active_units(2) and not turn_taken:
-        logging.debug(f'Next turn: team 1, slot {turn_counter}.')
+        logging.debug(f'Next turn: team 2, slot {turn_counter - get_total_active_units(1)}.')
         try:
             unit = active_units_team_2.get(turn_counter - get_total_active_units(1))
             if unit:

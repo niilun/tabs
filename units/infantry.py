@@ -1,9 +1,5 @@
 from .base import *
 
-# +--------------------+
-# |  modern era units  |
-# +--------------------+
-
 class infantry(base_unit):
     def __init__(self):
         self.unit_name = "Infantry"

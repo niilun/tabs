@@ -1,26 +1,36 @@
-import logging
-from functions.unit_management import all_units_map, all_eras_map
-from constants import status_effects
+import logging, requests, time, globals
+from functions.unit_management import all_units_map
 from functions.window_management import display_main_window
-
-version = '0.5.0'
+from functions.utilities import version_check
+from other.status_effects import status_effects
 
 logging.basicConfig(level=logging.DEBUG, format='%(levelname)s | %(message)s')
 
 def main():
     '''Internal function'''
-    logging.info(f'TABS Version {version}')
-    logging.info('Report issues/suggest something at https://github.com/niilun/tabs')
+    logging.info(f'TABS Version {globals.version}')
+    logging.info(f'Report issues/suggest something at https://github.com/{globals.repository_id}')
 
+    # Check for updates
+    logging.info('Starting update check...')
+    try:
+        update_check = requests.get(f'https://api.github.com/repos/{globals.repository_id}/releases/latest') 
+        server_version = update_check.json()['tag_name']
+        if version_check(globals.version, server_version) == False:
+            globals.update_available = True
+            logging.warning('+-----------------------------------------------------------------------------------------+')
+            logging.warning(f'| UPDATE FOUND! Download version {server_version} at https://github.com/{globals.repository_id}/releases/latest. |')
+            logging.warning('+-----------------------------------------------------------------------------------------+')
+    except Exception:
+        logging.error('Error while checking for updates, skipping.')
+    update_check.close()
+    logging.info('Finished version check.')
+
+    # Log loaded units/effects
     unit_names = []
     for unit in all_units_map.values():
-        unit_names.append(unit.__name__.replace('_', ' '))
+        unit_names.append(unit().unit_name)
     logging.debug(f'Loaded units map with {len(all_units_map)} entries: {unit_names}')
-
-    era_names = []
-    for era in all_eras_map.keys():
-        era_names.append(era.replace('_', ' '))
-    logging.debug(f'Loaded era map with {len(all_eras_map)} entries: {era_names}')
 
     effect_names = []
     for effect in status_effects:

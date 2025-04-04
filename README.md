@@ -6,7 +6,11 @@
 
 1. **Clone** this repository ```git clone https://github.com/Leowondeh/tabs.git``` or download it as an archive, and extract it.
 
-2. Enter the **TABS root folder** and run TABS with Python ```py```/```python3```/```python``` ```main.py```.
+2. Enter the repository folder in a terminal window.
+
+2. Install library requirements if needed ```pip install -r requirements.txt```.
+
+3. Run TABS with Python ```py```/```python3```/```python``` ```main.py```.
 
 ## Adding your own units
 
@@ -29,7 +33,7 @@ in it's `__init__` method.
 
 ## Building an executable
 
-You can package up the code into **executable form** using ```pyinstaller```. However, you **still** need the ```resources``` folder present with the executable.
+You can package the code into **executable form** using ```pyinstaller```. However, you **still** need the ```resources``` folder present with the executable.
 
 1. If you don't have them installed already, run ```pip install -r requirements.txt``` to install all requirements.
 
@@ -37,7 +41,7 @@ You can package up the code into **executable form** using ```pyinstaller```. Ho
 
 ## To-do list
 
-- [ ] UI overhaul
+- [x] UI overhaul
 - [ ] More units
 - [ ] Interactions between units
 - [ ] Stuff like status effects, attributes, etc.
@@ -46,6 +50,8 @@ You can package up the code into **executable form** using ```pyinstaller```. Ho
 ## Extra info / Acknowledgments
 
 Logo was made using the [Null](https://www.fontfabric.com/fonts/null/#font-styles) font (Made by Svetoslav Simov).
+
+Some icons from [Uicons](https://www.flaticon.com/uicons) by Flaticon.
 
 ## License
 
