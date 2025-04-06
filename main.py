@@ -1,30 +1,35 @@
-import logging, requests, time, globals
-from functions.unit_management import all_units_map
-from functions.window_management import display_main_window
-from functions.utilities import version_check
-from other.status_effects import status_effects
+import logging, requests, globals, configparser
 
-logging.basicConfig(level=logging.DEBUG, format='%(levelname)s | %(message)s')
+from game.unit_management import all_units_map
+from game.mechanics.status_effects import status_effects
+
+from game.game_window import display_main_window
+from game.utilities import update_check
+from game.settings_window import reset_config_file
+
+# Get config file. If not found, generate the default
+config = configparser.ConfigParser()
+
+if config.read('tabs.ini') == []:
+    reset_config_file()
+config.read('tabs.ini')
+
+globals.loaded_config = config
+version = config['Game']['Version']
+repository_data = config['Network']['RepositoryData']
+do_update = config.getboolean('Network', 'PerformUpdateCheck')
+debug_level = config.getint('Debug', 'DebugLevel')
+
+logging.basicConfig(level = debug_level, format = '%(levelname)s | %(message)s')
 
 def main():
     '''Internal function'''
-    logging.info(f'TABS Version {globals.version}')
-    logging.info(f'Report issues/suggest something at https://github.com/{globals.repository_id}')
+    logging.info(f'TABS Version {version}')
+    logging.info(f'Report issues/suggest something at https://github.com/{repository_data}')
 
     # Check for updates
-    logging.info('Starting update check...')
-    try:
-        update_check = requests.get(f'https://api.github.com/repos/{globals.repository_id}/releases/latest') 
-        server_version = update_check.json()['tag_name']
-        if version_check(globals.version, server_version) == False:
-            globals.update_available = True
-            logging.warning('+-----------------------------------------------------------------------------------------+')
-            logging.warning(f'| UPDATE FOUND! Download version {server_version} at https://github.com/{globals.repository_id}/releases/latest. |')
-            logging.warning('+-----------------------------------------------------------------------------------------+')
-    except Exception:
-        logging.error('Error while checking for updates, skipping.')
-    update_check.close()
-    logging.info('Finished version check.')
+    if do_update:
+        update_check(version, repository_data)
 
     # Log loaded units/effects
     unit_names = []

@@ -10,7 +10,7 @@ widgets_team_2 = []
 # Wrappers for game actions
 def create_unit_ui_wrapper(team):
     '''Handler function to run create_unit()'''
-    from functions.unit_management import create_unit
+    from game.unit_management import create_unit
     global main_window, unit_select_input
     try:
         selected_unit = unit_select_input.get(unit_select_input.curselection())
@@ -25,97 +25,16 @@ def create_unit_ui_wrapper(team):
 
 def take_next_action_ui_wrapper():
     '''Handler function to run take_next_action()'''
-    from functions.unit_management import take_next_action
+    from game.unit_management import take_next_action
 
     try:
         take_next_action()
     except Exception as error_message:
         messagebox.showerror('Error while taking next action', error_message)
 
-def display_unit_list():
-    '''Displays all loaded units in a generic info window.'''
-    from functions.unit_management import all_units_map
-    
-    messagebox.showinfo('Unit list', f'Units available:\n{", ".join([unit.__name__.replace("_", " ") for unit in all_units_map.values()])}')
-
-def display_unit_stats():
-    '''Shows stats of selected unit in an info window.'''
-    from .unit_management import all_units_map
-    import globals
-    global main_window, unit_select_input
-
-    # Get the listbox selection
-    try:
-        selected_unit = unit_select_input.get(unit_select_input.curselection())
-    except Exception:
-        # Tcl throws an error if there's no listbox selection, so we just return without clogging the console
-        return
-    
-    # If the window already exists, reuse it. Otherwise, create it
-    if globals.stat_window_active:
-        stat_window = globals.stat_window_active
-        for child in stat_window.winfo_children():
-            child.destroy()
-        stat_window.deiconify()
-        stat_window.lift()
-    else:
-        stat_window = tk.Toplevel(main_window)
-        stat_window.geometry('640x320')
-        stat_window.resizable(False, False)
-        stat_window.protocol('WM_DELETE_WINDOW', lambda: stat_window.withdraw())
-        # Store it for later use
-        globals.stat_window_active = stat_window
-    
-    selected_unit = all_units_map[selected_unit]()
-    stat_window.title(f'Unit info for {selected_unit.unit_name}')
-
-    # Unit image
-    try:
-        unit_image = create_image_label(stat_window, f'resources/units/{selected_unit.unit_name.replace(" ", "-").lower()}.png', 2, 2)
-    except Exception:
-        logging.warning(f'Failed to find image resources/units/{selected_unit.unit_name.replace(" ", "-").lower()}.png, using placeholder')
-        unit_image = create_image_label(stat_window, f'resources/units/placeholder.png', 2, 2)
-    
-    unit_image.pack(side = 'left', fill = 'y')
-
-    # Line separator
-    image_sep = tk.Canvas(stat_window, width = 2, height = 320)
-    image_sep.create_rectangle(0, 0, 2, 320, fill = 'gray')
-    image_sep.pack(side = 'left', fill = 'y')
-    
-    # Stats
-    stat_frame = tk.Frame(stat_window)
-    stat_frame.pack(side = 'left', anchor = 'n', padx = 10, pady = 10)
-
-    health_icon = create_image_label(stat_frame, 'resources/ui/health.png')
-    health_icon.grid(row = 0, column = 0)
-    health_display = tk.Label(stat_frame, text = f'{selected_unit.current_health} / {selected_unit.max_health} HP')
-    health_display.grid(row = 0, column = 1)
-
-    attack_icon = create_image_label(stat_frame, 'resources/ui/attack.png')
-    attack_icon.grid(row = 1, column = 0)
-    attack_display = tk.Label(stat_frame, text = f'{selected_unit.attack_damage} Attack Damage')
-    attack_display.grid(row = 1, column = 1)
-
-    # Spacer & line break
-    tk.Label(stat_frame, text = '                \n').grid(row = 2, column = 0)
-
-    # Abilities
-    try:
-        abilities = ', '.join(selected_unit.abilities)
-    except AttributeError:
-        abilities = 'not defined in unit class'
-
-    abilities_icon = create_image_label(stat_frame, 'resources/ui/abilities.png')
-    abilities_icon.grid(row = 3, column = 0)
-    abilities_display = tk.Label(stat_frame, text = f'Available abilities:')
-    abilities_display.grid(row = 3, column = 1)
-    abilities_list = tk.Label(stat_frame, text = abilities)
-    abilities_list.grid(row = 4, column = 1)
-
 def update_scoreboard():
     '''Updates the scoreboard (battle info), checks for new units or the death of existing ones.'''
-    from functions.unit_management import active_units_team_1, active_units_team_2
+    from game.unit_management import active_units_team_1, active_units_team_2
     # Function that resets the given slot to default (called if a unit dies)
     def set_default_slot(slot):
         try:
@@ -170,15 +89,18 @@ def update_scoreboard():
 
     logging.info('Updated battle scoreboard.')
 
-def display_settings_window():
-    logging.info('Settings are not implemented yet!')
-
 def display_main_window():
     '''Main function to create the game tkinter window'''
     from .unit_management import all_units_map
-    import globals
+    from .unit_info_displays import display_unit_stats
+    from .settings_window import display_settings_window
+    import globals, configparser
 
     global unit_select_input, main_window
+
+    config = configparser.ConfigParser()
+    config.read('tabs.ini')
+    version = config['Game']['Version']
 
     main_window = tk.Tk()
     main_window.title('TABS')
@@ -202,14 +124,17 @@ def display_main_window():
     unit_select_frame.pack(side = 'left', fill = 'y',anchor = 'nw', expand = True)
 
     # Summon buttons for both teams
-    tk.Button(text = 'Summon', command=lambda: create_unit_ui_wrapper(1)).place(x = 195, y = 220)
-    tk.Button(text = 'Summon', command=lambda: create_unit_ui_wrapper(2)).place(x = 195, y = 383)
+    tk.Button(text = 'Summon', command = lambda: create_unit_ui_wrapper(1)).place(x = 190, y = 220)
+    tk.Button(text = 'Summon', command = lambda: create_unit_ui_wrapper(2)).place(x = 190, y = 383)
 
-    tk.Button(text = 'Take next action', command=take_next_action_ui_wrapper).place(x = 530, y = 80)
+    take_next_action_button = tk.Button(text = 'Take next action', compound = 'left', command = take_next_action_ui_wrapper)
+    take_next_action_button.img = tk.PhotoImage(file = 'assets/ui/next_16x.png')
+    take_next_action_button.configure(image = take_next_action_button.img)
+    take_next_action_button.place(x = 510, y = 80)
 
     # Unit info bars
     battle_info = tk.Frame(main_window, pady=20)
-    battle_info.place(relx=0.32, y=120)
+    battle_info.place(relx=0.30, y=120)
 
     # Create two rows of 5 frames linked to battle_info
     for i in range(2):
@@ -218,12 +143,12 @@ def display_main_window():
 
             # Use a placeholder file until an actual unit fills the slot
             unit_image = tk.Label(frame)
-            unit_image.img = tk.PhotoImage(file='resources/units/placeholder.png')
+            unit_image.img = tk.PhotoImage(file = 'assets/units/placeholder.png')
             unit_image.img = unit_image.img.zoom(2, 2)
-            unit_image.config(image=unit_image.img)
+            unit_image.config(image = unit_image.img)
 
-            unit_health = tk.Canvas(frame, height=15, width=80, background='gray')
-            unit_name = tk.Label(frame, text='Empty slot', font=("TkDefaultFont", 12))
+            unit_health = tk.Canvas(frame, height = 15, width = 80, background = 'gray')
+            unit_name = tk.Label(frame, text = 'Empty slot', font = ("TkDefaultFont", 12))
 
             unit_image.pack()
             unit_name.pack()
@@ -243,16 +168,22 @@ def display_main_window():
             frame.grid(row=i, column=j)
 
     # Utilities
-    quit_button = tk.Button(text='Quit', command=sys.exit)
+    quit_button = tk.Button(text = 'Quit', compound = 'left', command = sys.exit)
+    quit_button.img = tk.PhotoImage(file = 'assets/ui/exit_16x.png')
+    quit_button.configure(image = quit_button.img)
     quit_button.place(x = 180, rely = 1, y = -20, anchor = 'w')
     
-    settings_button = tk.Button(text = 'Settings', command = display_settings_window)
-    settings_button.place(x = 236, rely = 1, y = -20, anchor = 'w')
+    settings_button = tk.Button(text = 'Settings', compound = 'left', command = lambda: display_settings_window(main_window))
+    settings_button.img = tk.PhotoImage(file = 'assets/ui/settings_16x.png')
+    settings_button.configure(image = settings_button.img)
+    settings_button.place(x = 265, rely = 1, y = -20, anchor = 'w')
 
-    unit_list_button = tk.Button(text = 'Unit info', command = display_unit_stats)
-    unit_list_button.place(x = 318, rely = 1, y = -20, anchor = 'w')
+    unit_info_button = tk.Button(text = 'Unit info', compound = 'left', command = lambda: display_unit_stats(main_window, unit_select_input))
+    unit_info_button.img = tk.PhotoImage(file = 'assets/ui/info_16x.png')
+    unit_info_button.configure(image = unit_info_button.img)
+    unit_info_button.place(x = 375, rely = 1, y = -20, anchor = 'w')
 
-    version_indicator = tk.Label(text = f'v{globals.version}')
+    version_indicator = tk.Label(text = f'v{version}')
     version_indicator.place(relx = 0.94, rely = 1, y = -15, anchor = 'w')
 
     logging.info('Main window loaded.')

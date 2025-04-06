@@ -8,7 +8,7 @@ from units.line_infantry import *
 from units.infantry import *
 from units.mechanized_infantry import *
 
-# Maps used when the user interacts with the game (add your units here)
+# Maps units to their user-friendly name
 all_units_map = {
     'Warrior': warrior,
     'Spearman': spearman,
@@ -16,7 +16,7 @@ all_units_map = {
     'Musketman': musketman,
     'Infantry': infantry,
     'Line Infantry': line_infantry,
-    'Mechanized Infantry': mechanized_infantry,
+    'Mechanized Infantry': mechanized_infantry
 }
 
 # Unit storage
@@ -58,7 +58,7 @@ def create_unit(unit, team):
         
         Then, add the unit to all_units_map with it's user-friendly name.
     '''
-    from functions.window_management import update_scoreboard
+    from game.game_window import update_scoreboard
 
     if unit not in all_units_map:
         raise Exception('Unit does not exist or is not declared!')
@@ -133,7 +133,7 @@ def take_next_action():
 
 def cleanup_units():
     '''Checks for dead units in both teams and removes them from the game'''
-    from functions.window_management import update_scoreboard
+    from game.game_window import update_scoreboard
     
     # Use copies when iterating
     counter = 1

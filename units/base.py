@@ -9,6 +9,7 @@ class base_unit():
     '''
     def __init__(self):
         self.unit_name = "Base unit"
+        self.abilities = ['Attack', 'Defend!']
         self.attributes = []
         self.current_health = 1
         self.max_health = 1
@@ -47,6 +48,7 @@ class base_unit():
         if self.armor > 0:
             if self.armor - damage <= 0:
                 self.armor = 0
+                logging.debug(f"{self.unit_name}'s armor has been broken!")
                 return
             self.armor -= damage
             return
