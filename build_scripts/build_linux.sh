@@ -2,7 +2,7 @@
 cd ..
 
 echo Running pyinstaller...
-pyinstaller --onefile --icon=resources/logos/logo.xbm main.py
+pyinstaller --onefile --icon=assets/logos/logo.xbm main.py
 
 echo Moving executable to root folder...
 cd dist

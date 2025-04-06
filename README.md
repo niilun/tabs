@@ -36,7 +36,7 @@ in it's `__init__` method.
 
 ## Building an executable
 
-You can package the code into **executable form** using ```pyinstaller```. However, you **still** need the ```resources``` folder present with the executable.
+You can package the code into **executable form** using ```pyinstaller```. However, you **still** need the ```assets``` folder present with the executable.
 
 1. If you don't have them installed already, run ```pip install -r requirements.txt``` to install all requirements.
 
@@ -54,7 +54,7 @@ You can package the code into **executable form** using ```pyinstaller```. Howev
 
 Logo was made using the [Null](https://online-fonts.com/fonts/null) font (Made by Svetoslav Simov).
 
-Some icons from [Uicons](https://www.flaticon.com/uicons) by Flaticon.
+Some UI icons from [Uicons](https://www.flaticon.com/uicons) by Flaticon.
 
 ## License
 
