@@ -1,7 +1,6 @@
+<h1 align="center"><img src="assets/logos/logo.20.png"/></h1>
 
-# TABS
-
-![TABS Logo](assets/logos/logo.20.png)
+This is a file with a top-level HTML heading
 
 **TABS** is a simulation tool/game, in which you pit various units against each other to fight! It's highly customizable, allowing anyone to add their own units and abilities which interact easily with the game.
 
