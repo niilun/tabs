@@ -61,7 +61,10 @@ def display_settings_window(main_window):
 
     # Reset settings & decoration
     config_icon = create_image_label(settings_window, 'assets/ui/settings_deco_64x.png')
-    config_icon.place(x = 540, y = 30)
+    config_icon.place(x = 530, y = 30)
+
+    config_disclaimer = tk.Label(settings_window, text = 'Settings only apply\nafter game restart!')
+    config_disclaimer.place(x = 500, y = 110)
 
     config_reset = tk.Button(settings_window, text = 'Reset to default',command = reset_config_file_handler)
     config_reset.place(x = 500, y = 285)

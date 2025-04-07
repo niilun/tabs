@@ -59,11 +59,21 @@ def create_unit(unit, team):
         Then, add the unit to all_units_map with it's user-friendly name.
     '''
     from game.game_window import update_scoreboard
+    from globals import loaded_config
 
     if unit not in all_units_map:
         raise Exception('Unit does not exist or is not declared!')
     
+    # Load scaling from settings
+    health_scaling = loaded_config.getfloat('Game', 'UnitHealthScaling')
+    attack_scaling = loaded_config.getfloat('Game', 'UnitAttackScaling')
+
     created_unit = all_units_map[unit]()
+    
+    # Apply scaling
+    created_unit.current_health *= health_scaling
+    created_unit.max_health *= health_scaling
+    created_unit.attack_damage *= attack_scaling
 
     if team == 1:
         if get_total_active_units(1) >= 5:
