@@ -9,6 +9,7 @@ def create_image_label(master_window, path: str, zoomx: int = 1, zoomy: int = 1)
     return created_image
 
 def update_check(current_version, repository_data):
+    '''Sends a request to a GitHub repo based on repository_data to check whether the current_version is >= compared to the GitHub version.'''
     import logging, globals, requests
 
     logging.info('Starting update check...')

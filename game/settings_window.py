@@ -70,6 +70,7 @@ def display_settings_window(main_window):
     config_reset.place(x = 500, y = 285)
 
 def save_config_file(config):
+    '''Saves input config to tabs.ini.'''
     with open('tabs.ini', 'w+') as config_file:
         config_file.write('# Settings file for TABS\n\n')
         config_file.write('# Change this manually here, or\n')

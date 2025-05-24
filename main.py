@@ -1,4 +1,18 @@
-import logging, requests, globals, configparser
+import pkg_resources, sys, subprocess
+
+requirements = {'pyinstaller', 'requests', 'configparser', 'customtkinter'}
+found = {pkg.key for pkg in pkg_resources.working_set}
+missing = requirements - found
+
+if missing:
+    print(f'Found missing packages: {", ".join(missing)}')
+    print('Installing them... Please wait.')
+    python_path = sys.executable
+    subprocess.check_call([python_path, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+else:
+    print('Found no missing packages.')
+
+import logging, globals, configparser, customtkinter
 
 from game.unit_management import all_units_map
 from game.mechanics.status_effects import status_effects
