@@ -8,13 +8,15 @@ def setup_logging(log_level: int):
     logger = logging.getLogger()
     logger.setLevel(log_level)
 
-    format = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+    # Set formatting (remove time from stdout to not clog console)
+    stdout_format = logging.Formatter('%(levelname)s | %(message)s')
+    file_format = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
 
     stdout_logger = logging.StreamHandler(sys.stdout)
-    stdout_logger.setFormatter(format)
+    stdout_logger.setFormatter(stdout_format)
 
     file_logger = logging.FileHandler(f'logs/{uuid.uuid4()}.log')
-    file_logger.setFormatter(format)
+    file_logger.setFormatter(file_format)
 
     logger.addHandler(stdout_logger)
     logger.addHandler(file_logger)
