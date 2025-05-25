@@ -1,12 +1,12 @@
 import logging
 
-from units.warrior import *
-from units.spearman import *
-from units.man_at_arms import *
-from units.musketman import *
-from units.line_infantry import *
-from units.infantry import *
-from units.mechanized_infantry import *
+from units.warrior import warrior
+from units.spearman import spearman
+from units.man_at_arms import man_at_arms
+from units.musketman import musketman
+from units.line_infantry import line_infantry
+from units.infantry import infantry
+from units.mechanized_infantry import mechanized_infantry
 
 # Maps units to their user-friendly name
 all_units_map = {

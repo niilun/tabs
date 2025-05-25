@@ -1,7 +1,5 @@
 import configparser
 
-update_available = False
-
 # Window holders
 # These variables hold windows so the same button doesn't spawn more than one of each at once
 stat_window_active = None

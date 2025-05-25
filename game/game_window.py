@@ -104,9 +104,6 @@ def display_main_window():
 
     main_window = tk.Tk()
     main_window.title('TABS')
-
-    if globals.update_available:
-        main_window.title('TABS | update available, check console!') 
     
     main_window.geometry('920x640')
     main_window.resizable(False, False)

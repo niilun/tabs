@@ -1,3 +1,24 @@
+def setup_logging(log_level: int):
+    import logging, sys, os, uuid
+
+    # Create the 'logs' folder if it doesn't exist
+    if not os.path.isdir('logs'):
+        os.mkdir('logs')
+
+    logger = logging.getLogger()
+    logger.setLevel(log_level)
+
+    format = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+
+    stdout_logger = logging.StreamHandler(sys.stdout)
+    stdout_logger.setFormatter(format)
+
+    file_logger = logging.FileHandler(f'logs/{uuid.uuid4()}.log')
+    file_logger.setFormatter(format)
+
+    logger.addHandler(stdout_logger)
+    logger.addHandler(file_logger)
+
 def create_image_label(master_window, path: str, zoomx: int = 1, zoomy: int = 1):
     '''Creates a tk Label containing an image, assigned to window master_window, with photo resource at path and zoom values zoomx and zoomy.'''
     import tkinter as tk

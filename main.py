@@ -8,17 +8,20 @@ if missing:
     print(f'Found missing packages: {", ".join(missing)}')
     print('Installing them... Please wait.')
     python_path = sys.executable
-    subprocess.check_call([python_path, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+    try:
+        subprocess.check_call([python_path, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+    except Exception:
+        print('Failed to install dependencies. Try running "pip install -r requirements.txt" from your terminal while in the TABS root folder.')
 else:
     print('Found no missing packages.')
 
-import logging, globals, configparser, customtkinter
+import logging, globals, configparser
 
 from game.unit_management import all_units_map
 from game.mechanics.status_effects import status_effects
 
 from game.game_window import display_main_window
-from game.utilities import update_check
+from game.utilities import update_check, setup_logging
 from game.settings_window import reset_config_file
 
 # Get config file. If not found, generate the default
@@ -34,10 +37,12 @@ repository_data = config['Network']['RepositoryData']
 do_update = config.getboolean('Network', 'PerformUpdateCheck')
 debug_level = config.getint('Debug', 'DebugLevel')
 
-logging.basicConfig(level = debug_level, format = '%(levelname)s | %(message)s')
+# Load logging
+setup_logging(debug_level)
 
 def main():
     '''Internal function'''
+    logging.info('========================================')
     logging.info(f'TABS Version {version}')
     logging.info(f'Report issues/suggest something at https://github.com/{repository_data}')
 
