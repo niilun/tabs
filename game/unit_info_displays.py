@@ -25,6 +25,7 @@ def display_unit_stats(main_window, unit_select_input):
         stat_window.geometry('640x320')
         stat_window.resizable(False, False)
         stat_window.protocol('WM_DELETE_WINDOW', lambda: stat_window.withdraw())
+
         # Store it for later use
         globals.stat_window_active = stat_window
 
@@ -82,4 +83,5 @@ def display_unit_stats(main_window, unit_select_input):
     abilities_display.grid(row = 3, column = 1)
     abilities_list = ctk.CTkLabel(stat_frame, text = abilities)
     abilities_list.grid(row = 4, column = 1)
+
     logging.info(f'Showing unit info for {selected_unit.unit_name}')

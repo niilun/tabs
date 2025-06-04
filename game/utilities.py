@@ -15,7 +15,7 @@ def setup_logging(log_level: int):
     stdout_logger = logging.StreamHandler(sys.stdout)
     stdout_logger.setFormatter(stdout_format)
 
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     current_uuid = uuid.uuid4()
 
     # Refresh uuid if it somehow already exists
