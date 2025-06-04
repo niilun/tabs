@@ -8,6 +8,9 @@ settings_window_active = None
 # Settings
 loaded_config = None
 
+# Main window reference
+main_window_reference = None
+
 default_config = configparser.ConfigParser()
 default_config.optionxform = str # stop configparser from lowering config names
 

@@ -1,5 +1,5 @@
 def setup_logging(log_level: int):
-    import logging, sys, os, uuid
+    import logging, sys, os, uuid, datetime
 
     # Create the 'logs' folder if it doesn't exist
     if not os.path.isdir('logs'):
@@ -15,21 +15,35 @@ def setup_logging(log_level: int):
     stdout_logger = logging.StreamHandler(sys.stdout)
     stdout_logger.setFormatter(stdout_format)
 
-    file_logger = logging.FileHandler(f'logs/{uuid.uuid4()}.log')
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    current_uuid = uuid.uuid4()
+
+    # Refresh uuid if it somehow already exists
+    if os.path.exists(f'logs/{current_time} {current_uuid}.log'):
+        current_uuid = uuid.uuid4()
+    
+    file_logger = logging.FileHandler(f'logs/{current_time} {current_uuid}.log')
     file_logger.setFormatter(file_format)
 
     logger.addHandler(stdout_logger)
     logger.addHandler(file_logger)
 
-def create_image_label(master_window, path: str, zoomx: int = 1, zoomy: int = 1):
-    '''Creates a tk Label containing an image, assigned to window master_window, with photo resource at path and zoom values zoomx and zoomy.'''
-    import tkinter as tk
+def show_error(title: str, message: str):
+    from CTkMessagebox import CTkMessagebox
+    CTkMessagebox(title = title, message = message, icon = 'assets/ui/exit_16x.png')
 
-    created_image = tk.Label(master_window)
-    created_image.img = tk.PhotoImage(file = path)
-    created_image.img = created_image.img.zoom(zoomx, zoomy)
-    created_image.configure(image = created_image.img)
-    return created_image
+def show_info(title: str, message: str):
+    from CTkMessagebox import CTkMessagebox
+    CTkMessagebox(title = title, message = message, icon = 'assets/ui/info_16x.png')
+
+def show_ask_question(title: str, question: str) -> bool:
+    from CTkMessagebox import CTkMessagebox
+    box = CTkMessagebox(title = title, message = question, icon = 'assets/ui/settings_64x.png', option_1 = 'Yes', option_2 = 'No')
+    response = box.get()
+
+    if response == 'Yes':
+        return True
+    return False
 
 def update_check(current_version, repository_data):
     '''Sends a request to a GitHub repo based on repository_data to check whether the current_version is >= compared to the GitHub version.'''
@@ -49,10 +63,10 @@ def update_check(current_version, repository_data):
     logging.info('Finished version check.')
 
 def version_check(client_version: str, server_version: str) -> bool:
-    '''Returns "True" if client_version is >= to the server_version, otherwise "False".'''
+    '''Returns "True" if client has a greater or equal version to server version, otherwise "False".'''
+    from packaging.version import Version
 
-    # Versions (eg. 0.2.7) get converted to numbers like 27, which can be compared easily
-    converted_client_version = client_version.replace('.', '').lstrip('0')
-    converted_server_version = server_version.replace('.', '').lstrip('0')
-    
+    converted_client_version = Version(client_version)
+    converted_server_version = Version(server_version)
+
     return converted_client_version >= converted_server_version

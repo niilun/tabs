@@ -1,6 +1,6 @@
 import pkg_resources, sys, subprocess
 
-requirements = {'pyinstaller', 'requests', 'configparser', 'customtkinter'}
+requirements = {'pyinstaller', 'requests', 'configparser', 'customtkinter', 'ctklistbox', 'ctkmessagebox'}
 found = {pkg.key for pkg in pkg_resources.working_set}
 missing = requirements - found
 
@@ -12,8 +12,6 @@ if missing:
         subprocess.check_call([python_path, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
     except Exception:
         print('Failed to install dependencies. Try running "pip install -r requirements.txt" from your terminal while in the TABS root folder.')
-else:
-    print('Found no missing packages.')
 
 import logging, globals, configparser
 
@@ -22,13 +20,13 @@ from game.mechanics.status_effects import status_effects
 
 from game.game_window import display_main_window
 from game.utilities import update_check, setup_logging
-from game.settings_window import reset_config_file
+from game.settings_window import reset_settings_file
 
 # Get config file. If not found, generate the default
 config = configparser.ConfigParser()
 
 if config.read('tabs.ini') == []:
-    reset_config_file()
+    reset_settings_file()
 config.read('tabs.ini')
 
 globals.loaded_config = config
@@ -41,10 +39,11 @@ debug_level = config.getint('Debug', 'DebugLevel')
 setup_logging(debug_level)
 
 def main():
-    '''Internal function'''
+    '''Starter main function'''
     logging.info('========================================')
     logging.info(f'TABS Version {version}')
     logging.info(f'Report issues/suggest something at https://github.com/{repository_data}')
+    logging.info('========================================\n')
 
     # Check for updates
     if do_update:
