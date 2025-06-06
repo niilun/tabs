@@ -58,7 +58,7 @@ def create_unit(unit, team):
         
         Then, add the unit to all_units_map with it's user-friendly name.
     '''
-    from game.game_window import update_scoreboard
+    from game.game_window import update_scoreboard, selected_overlay, selected_unit_row, selected_unit_column
     from globals import loaded_config
 
     if unit not in all_units_map:
@@ -75,11 +75,20 @@ def create_unit(unit, team):
     created_unit.max_health *= health_scaling
     created_unit.attack_damage *= attack_scaling
 
+    if selected_overlay != None:
+        if selected_unit_row == 0:
+            active_units_team_1[selected_unit_column + 1] = created_unit
+        elif selected_unit_row == 1:
+            active_units_team_2[selected_unit_column + 1] = created_unit
+        logging.debug(f'Set unit {unit} in {selected_unit_row} on team {selected_unit_row + 1}')
+        update_scoreboard()
+        return
+    
     if team == 1:
         if get_total_active_units(1) >= 5:
             raise Exception('Team 1 is full!')
         
-        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(1)}.')
+        logging.debug(f'Created unit {unit} in slot {find_first_available_slot(1)} on team {team}.')
         active_units_team_1[find_first_available_slot(1)] = created_unit
     elif team == 2:
         if get_total_active_units(2) >= 5:

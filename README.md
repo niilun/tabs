@@ -6,15 +6,11 @@
 
 1. **Clone** this repository ```git clone https://github.com/Leowondeh/tabs.git``` or download it as an archive, and extract it.
 
-2. Enter the repository folder in a terminal window.
-
-3. Install library requirements if needed ```pip install -r requirements.txt```.
-
-4. Run TABS with Python ```py```/```python3```/```python``` ```main.py```.
+2. Enter the repository folder in a terminal window and run TABS with ```py```/```python3```/```python``` ```main.py```.
 
 ## Adding your own units
 
-You need just a *couple* things to create a working, shiny new unit:
+You need just a couple things to create a working, shiny new unit:
 
 1. To work with the game, a unit needs to have
     - ```current_health```
@@ -46,7 +42,7 @@ You can package the code into **executable form** using ```pyinstaller```. Howev
 - [ ] More units
 - [ ] Interactions between units
 - [ ] Stuff like status effects, attributes, etc.
-- [ ] Boss-like template units
+- [ ] Boss-like units
 
 ## Extra info / Acknowledgments
 

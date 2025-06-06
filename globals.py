@@ -14,7 +14,7 @@ main_window_reference = None
 default_config = configparser.ConfigParser()
 default_config.optionxform = str # stop configparser from lowering config names
 
-default_config['Game'] = {'Version': '0.8.1',
+default_config['Game'] = {'Version': '0.8.2',
                           'UnitHealthScaling': 1,
                           'UnitAttackScaling': 1
                           }
