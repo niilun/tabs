@@ -52,14 +52,14 @@ def display_unit_stats(main_window, unit_select_input):
     stat_frame = ctk.CTkFrame(stat_window)
     stat_frame.pack(side = 'left', anchor = 'n', padx = 10, pady = 10)
     
-    health_icon = ctk.CTkImage(light_image = Image.open('assets/ui/health_16x.png'))
+    health_icon = ctk.CTkImage(light_image = Image.open('assets/ui/health.png'))
     health_icon_label = ctk.CTkLabel(stat_frame, text = '', image = health_icon)
     health_icon_label.grid(row = 0, column = 0)
 
     health_display = ctk.CTkLabel(stat_frame, text = f'{selected_unit.current_health} / {selected_unit.max_health} HP')
     health_display.grid(row = 0, column = 1)
 
-    attack_icon = ctk.CTkImage(light_image = Image.open('assets/ui/attack_16x.png'))
+    attack_icon = ctk.CTkImage(light_image = Image.open('assets/ui/attack.png'))
     attack_icon_label = ctk.CTkLabel(stat_frame, text = '', image = attack_icon)
     attack_icon_label.grid(row = 1, column = 0)
 
@@ -75,7 +75,7 @@ def display_unit_stats(main_window, unit_select_input):
     except AttributeError:
         abilities = 'Not defined in unit class!'
 
-    abilities_icon = ctk.CTkImage(light_image = Image.open('assets/ui/abilities_16x.png'))
+    abilities_icon = ctk.CTkImage(light_image = Image.open('assets/ui/abilities.png'))
     abilities_icon_label = ctk.CTkLabel(stat_frame, text = '', image = abilities_icon)
     abilities_icon_label.grid(row = 3, column = 0)
 

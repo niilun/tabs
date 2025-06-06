@@ -40,10 +40,8 @@ setup_logging(debug_level)
 
 def main():
     '''Starter main function'''
-    logging.info('========================================')
     logging.info(f'TABS Version {version}')
-    logging.info(f'Report issues/suggest something at https://github.com/{repository_data}')
-    logging.info('========================================\n')
+    logging.info(f'Development repository: https://github.com/{repository_data}\n')
 
     # Check for updates
     if do_update:

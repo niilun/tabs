@@ -28,23 +28,6 @@ def setup_logging(log_level: int):
     logger.addHandler(stdout_logger)
     logger.addHandler(file_logger)
 
-def show_error(title: str, message: str):
-    from CTkMessagebox import CTkMessagebox
-    CTkMessagebox(title = title, message = message, icon = 'assets/ui/exit_16x.png')
-
-def show_info(title: str, message: str):
-    from CTkMessagebox import CTkMessagebox
-    CTkMessagebox(title = title, message = message, icon = 'assets/ui/info_16x.png')
-
-def show_ask_question(title: str, question: str) -> bool:
-    from CTkMessagebox import CTkMessagebox
-    box = CTkMessagebox(title = title, message = question, icon = 'assets/ui/settings_64x.png', option_1 = 'Yes', option_2 = 'No')
-    response = box.get()
-
-    if response == 'Yes':
-        return True
-    return False
-
 def update_check(current_version, repository_data):
     '''Sends a request to a GitHub repo based on repository_data to check whether the current_version is >= compared to the GitHub version.'''
     import logging, globals, requests
@@ -70,3 +53,38 @@ def version_check(client_version: str, server_version: str) -> bool:
     converted_server_version = Version(server_version)
 
     return converted_client_version >= converted_server_version
+
+def clear_console():
+    '''Clears the console.'''
+    import os, platform
+    if platform.system() == 'Linux':
+        os.system('clear')
+    elif platform.system() == 'Windows':
+        os.system('cls')
+
+def reload_game():
+    '''Reloads the game by re-running python.'''
+    import os, sys, logging
+    # Flush file buffers so they are closed properly
+    sys.stdout.flush()
+    sys.stderr.flush()
+    clear_console()
+    logging.info(f'Reloading game, running {" ".join(sys.orig_argv)}')
+    os.execl(sys.executable, *sys.orig_argv)
+
+def show_error(title: str, message: str):
+    from CTkMessagebox import CTkMessagebox
+    CTkMessagebox(title = title, message = message, icon = 'assets/ui/exit_16x.png')
+
+def show_info(title: str, message: str):
+    from CTkMessagebox import CTkMessagebox
+    CTkMessagebox(title = title, message = message, icon = 'assets/ui/info_16x.png')
+
+def show_ask_question(title: str, question: str) -> bool:
+    from CTkMessagebox import CTkMessagebox
+    box = CTkMessagebox(title = title, message = question, icon = 'assets/ui/settings_64x.png', option_1 = 'Yes', option_2 = 'No')
+    response = box.get()
+
+    if response == 'Yes':
+        return True
+    return False

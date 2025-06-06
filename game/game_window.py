@@ -96,10 +96,11 @@ def update_scoreboard():
     logging.info('Updated battle scoreboard.')
 
 def display_main_window():
-    '''Main function to create the game tkinter window'''
+    '''Creates and shows the game window.'''
     from .unit_management import all_units_map
     from .unit_info_displays import display_unit_stats
     from .settings_window import display_settings_window
+    from .utilities import reload_game
     import globals
     import configparser
 
@@ -129,7 +130,7 @@ def display_main_window():
     ctk.CTkButton(main_window, text = 'Summon', width = 80, command = lambda: create_unit_ui_wrapper(1)).place(x = 190, y = 220)
     ctk.CTkButton(main_window, text = 'Summon', width = 80, command = lambda: create_unit_ui_wrapper(2)).place(x = 190, y = 383)
 
-    take_next_action_icon = ctk.CTkImage(light_image = Image.open('assets/ui/next_16x.png'))
+    take_next_action_icon = ctk.CTkImage(light_image = Image.open('assets/ui/next.png'))
     take_next_action_button = ctk.CTkButton(main_window, text = 'Take next action', image = take_next_action_icon, compound = 'left', command = take_next_action_ui_wrapper)
 
     take_next_action_button.place(x = 500, y = 80)
@@ -144,7 +145,11 @@ def display_main_window():
         for j in range(5):
             battle_info.grid_columnconfigure(j, minsize=120, weight=1)
 
-            frame = ctk.CTkFrame(battle_info, width = 200, height = 120)
+            frame = ctk.CTkFrame(battle_info, width = 120, height = 200)
+
+            # Selection for unit info
+            unit_selection_overlay = ctk.CTkButton(frame, width = 200, height = 200, text = '', hover = True, fg_color = 'transparent')
+            unit_selection_overlay.place(relx=0, rely=0, relwidth=1, relheight=1)
 
             # Use a placeholder file until an actual unit fills the slot
             unit_image_res = ctk.CTkImage(light_image=Image.open('assets/units/placeholder.png'), size = (100, 100))
@@ -175,17 +180,20 @@ def display_main_window():
             frame.grid(row=i, column=j, padx=2, pady=2, sticky="nsew")
 
     # Utilities
-    quit_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/exit_16x.png'))
+    quit_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/exit.png'))
     quit_button = ctk.CTkButton(main_window, text = 'Quit', image = quit_button_icon, width = 80, compound = 'left', command = sys.exit)
     quit_button.place(x = 190, rely = 1, y = -20, anchor = 'w')
 
-    settings_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/settings_16x.png'))
+    settings_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/settings-sliders.png'))
     settings_button = ctk.CTkButton(main_window, text = 'Settings', image = settings_button_icon, width = 80, compound = 'left', command = lambda: display_settings_window(main_window))
     settings_button.place(x = 275, rely = 1, y = -20, anchor = 'w')
 
-    unit_info_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/info_16x.png'))
+    unit_info_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/info.png'))
     unit_info_button = ctk.CTkButton(main_window, text = 'Unit info', image = unit_info_button_icon, width = 100, compound = 'left', command = lambda: display_unit_stats(main_window, unit_select_input))
     unit_info_button.place(x = 368, rely = 1, y = -20, anchor = 'w')
+
+    reload_game_button = ctk.CTkButton(main_window, text = 'Reload', width = 60, command = reload_game)
+    reload_game_button.place(x = 850, rely = 0, y = 20, anchor = 'w')
 
     version_indicator = ctk.CTkLabel(main_window, text = f'v{version}')
     version_indicator.place(x = 880, rely = 1, y = -10, anchor = 'w')

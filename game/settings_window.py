@@ -52,12 +52,12 @@ def display_settings_window(main_window):
             row += 1
 
     # Reset settings & decoration
-    settings_image = ctk.CTkImage(light_image = Image.open('assets/ui/settings_deco_64x.png'), size = (64, 64))
+    settings_image = ctk.CTkImage(light_image = Image.open('assets/light/logo_background.png'), dark_image = Image.open('assets/dark/logo_background.png'), size = (365, 180))
     settings_icon = ctk.CTkLabel(settings_window, text = '', image = settings_image)
-    settings_icon.place(x = 530, y = 30)
+    settings_icon.place(x = 350, y = -50)
 
-    settings_disclaimer = ctk.CTkLabel(settings_window, text='Settings only apply\nafter game restart!')
-    settings_disclaimer.place(x = 500, y = 110)
+    settings_disclaimer = ctk.CTkLabel(settings_window, text='Settings only apply after game restart!')
+    settings_disclaimer.place(x = 410, y = 90)
 
     save_button = ctk.CTkButton(settings_window, text = 'Save', width = 60, command = lambda: get_and_save_settings(loaded_settings))
     save_button.place(x = 570, y = 250)

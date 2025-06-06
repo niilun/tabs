@@ -42,7 +42,7 @@ You can package the code into **executable form** using ```pyinstaller```. Howev
 ## To-do list
 
 - [x] UI overhaul
-- [ ] Fix an interface bug relating to Windows display scaling
+- [x] Fix an interface bug relating to Windows display scaling
 - [ ] More units
 - [ ] Interactions between units
 - [ ] Stuff like status effects, attributes, etc.
