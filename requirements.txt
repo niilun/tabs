@@ -1,5 +1,5 @@
 pyinstaller==6.11.0
-requests==2.32.3
+requests==2.32.4
 configparser==7.2.0
 customtkinter==5.2.2
 ctklistbox==1.5
