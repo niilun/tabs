@@ -1,23 +1,14 @@
 import logging
 
-from units.warrior import warrior
-from units.spearman import spearman
-from units.man_at_arms import man_at_arms
-from units.musketman import musketman
-from units.line_infantry import line_infantry
-from units.infantry import infantry
-from units.mechanized_infantry import mechanized_infantry
+from units.warrior import Warrior
+from units.spearman import Spearman
+from units.man_at_arms import ManAtArms
+from units.musketman import Musketman
+from units.line_infantry import LineInfantry
+from units.infantry import Infantry
+from units.mechanized_infantry import MechanizedInfantry
 
-# Maps units to their user-friendly name
-all_units_map = {
-    'Warrior': warrior,
-    'Spearman': spearman,
-    'Man-at-Arms': man_at_arms,
-    'Musketman': musketman,
-    'Infantry': infantry,
-    'Line Infantry': line_infantry,
-    'Mechanized Infantry': mechanized_infantry
-}
+from units import unit_registry
 
 # Unit storage
 turn_counter = 1
@@ -43,7 +34,7 @@ def create_unit(unit, team):
     Creates a unit using input from the tkinter window interface, called when pressing
     'Summon' on either team.
 
-    ADDING A NEW UNIT
+    CREATING A NEW UNIT
 
         To be considered valid, the unit needs to have it's own
         current_health, max_health, attack_damage and armor. Also,
@@ -53,22 +44,25 @@ def create_unit(unit, team):
         (though other units may), but the variable needs to exist for unit combat
         to take place correctly, even if it's at 0.
 
-        First, if the unit is in a different file, 
-        make sure to import it in unit_management.py.
-        
-        Then, add the unit to all_units_map with it's user-friendly name.
+        Make sure to decorate the unit's definition with @register_new_unit
+        (imported from the units module) so it shows in the game.
+    
+    ADDING THE NEW UNIT
+
+        To add the newly created unit, just drop it into the units/ folder,
+        and it should load automatically into the game.
     '''
     from game.game_window import update_scoreboard, selected_overlay, selected_unit_row, selected_unit_column
     from globals import loaded_config
 
-    if unit not in all_units_map:
+    if unit not in unit_registry:
         raise Exception('Unit does not exist or is not declared!')
     
     # Load scaling from settings
     health_scaling = loaded_config.getfloat('Game', 'UnitHealthScaling')
     attack_scaling = loaded_config.getfloat('Game', 'UnitAttackScaling')
 
-    created_unit = all_units_map[unit]()
+    created_unit = unit_registry[unit]()
     
     # Apply scaling
     created_unit.current_health *= health_scaling

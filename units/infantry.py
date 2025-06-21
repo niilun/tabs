@@ -1,6 +1,8 @@
-from .base import *
+from .base import BaseUnit
+from units import register_new_unit
 
-class infantry(base_unit):
+@register_new_unit
+class Infantry(BaseUnit):
     def __init__(self):
         self.unit_name = "Infantry"
         self.abilities = ['Attack', 'Defend!']

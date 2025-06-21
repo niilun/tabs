@@ -1,5 +1,7 @@
 import customtkinter as ctk, globals, logging, configparser
-from .utilities import show_ask_question
+
+from utilities.window_infoboxes import show_ask_question
+from assets.manifest import Asset
 
 setting_references = {}
 
@@ -7,10 +9,7 @@ def display_settings_window(main_window):
     '''Shows the settings window.'''
     from PIL import Image
 
-    # Load settings
-    loaded_settings = configparser.ConfigParser()
-    loaded_settings.optionxform = str
-    loaded_settings.read('tabs.ini')
+    loaded_settings = globals.loaded_config
 
     # If the window already exists and is valid, reuse it. Otherwise, create it
     if globals.settings_window_active and globals.settings_window_active.winfo_exists():
@@ -52,7 +51,7 @@ def display_settings_window(main_window):
             row += 1
 
     # Reset settings & decoration
-    settings_image = ctk.CTkImage(light_image = Image.open('assets/light/logo_background.png'), dark_image = Image.open('assets/dark/logo_background.png'), size = (365, 180))
+    settings_image = ctk.CTkImage(light_image = Image.open(Asset.LIGHT_LOGO_BACKGROUND.path), dark_image = Image.open(Asset.DARK_LOGO_BACKGROUND.path), size = (365, 180))
     settings_icon = ctk.CTkLabel(settings_window, text = '', image = settings_image)
     settings_icon.place(x = 350, y = -50)
 
@@ -83,6 +82,7 @@ def save_settings_file(settings):
 def reset_settings_file():
     '''Resets the settings file to default.'''
     settings = configparser.ConfigParser()
+    settings.optionxform = str
     settings = globals.default_config
     
     save_settings_file(settings)

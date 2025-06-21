@@ -1,7 +1,7 @@
 import logging
 from random import randint
 
-class base_unit():
+class BaseUnit():
     '''
     Base model for units, does not have stats.
 

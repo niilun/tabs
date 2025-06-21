@@ -1,11 +1,16 @@
 import customtkinter as ctk
-from PIL import Image
+import globals
 
-def create_battle_info(window_reference):
+from PIL import Image
+from assets.manifest import Asset
+
+def create_battle_info():
     from game.game_window import widgets_team_1, widgets_team_2, show_overlay_selected
+
+    main_window = globals.main_window_reference
     
     # Unit info bars
-    battle_info = ctk.CTkFrame(window_reference, fg_color = 'transparent')
+    battle_info = ctk.CTkFrame(main_window, fg_color = 'transparent')
     battle_info.place(x = 300, y = 120)
 
     # Create two rows of 5 frames linked to battle_info
@@ -21,7 +26,7 @@ def create_battle_info(window_reference):
             unit_selection_overlay.place(relx=0, rely=0, relwidth=1, relheight=1)
 
             # Use a placeholder file until an actual unit fills the slot
-            unit_image_res = ctk.CTkImage(light_image=Image.open('assets/units/placeholder.png'), size = (100, 100))
+            unit_image_res = ctk.CTkImage(light_image=Image.open(Asset.UNIT_PLACEHOLDER_ICON.path), size = (100, 100))
             unit_image = ctk.CTkLabel(frame, text = '', width = 80, image = unit_image_res)
 
             unit_health = ctk.CTkCanvas(frame, height=15, width= 80, background='gray')

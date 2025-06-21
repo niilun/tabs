@@ -2,11 +2,17 @@ import customtkinter as ctk, logging, sys, globals, configparser
 from CTkListbox import CTkListbox
 from PIL import Image
 
-from .utilities import show_error, reload_game
+from assets.manifest import Asset
+
+from utilities.window_infoboxes import show_error
+from utilities.reload_game import reload_game
+
 from .unit_info_displays import display_unit_stats
 from .settings_window import display_settings_window
-from .unit_management import all_units_map
 from .battle_info import create_battle_info
+
+from game.unit_management import active_units_team_1, active_units_team_2
+from units import unit_registry
 
 # Disable PIL logging
 logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
@@ -133,8 +139,7 @@ def display_main_window():
     '''Creates and shows the game window.'''
     global unit_select_input
 
-    config = configparser.ConfigParser()
-    config.read('tabs.ini')
+    config = globals.loaded_config
     version = config['Game']['Version']
 
     main_window = ctk.CTk()
@@ -147,7 +152,7 @@ def display_main_window():
 
     unit_select_frame = ctk.CTkFrame(main_window)
     unit_select_input = CTkListbox(unit_select_frame)
-    for unit in all_units_map.keys():
+    for unit in unit_registry.keys():
         unit_select_input.insert(ctk.END, unit)
     
     unit_select_input.pack(side = 'left', fill = 'both', expand = True)
@@ -157,24 +162,24 @@ def display_main_window():
     ctk.CTkButton(main_window, text = 'Summon', width = 80, command = lambda: create_unit_ui_wrapper(1)).place(x = 190, y = 300)
     ctk.CTkButton(main_window, text = 'Summon', width = 80, command = lambda: create_unit_ui_wrapper(2)).place(x = 190, y = 383)
 
-    take_next_action_icon = ctk.CTkImage(light_image = Image.open('assets/ui/next.png'))
+    take_next_action_icon = ctk.CTkImage(light_image = Image.open(Asset.UI_NEXT_ICON.path))
     take_next_action_button = ctk.CTkButton(main_window, text = 'Take next action', image = take_next_action_icon, compound = 'left', command = take_next_action_ui_wrapper)
 
     take_next_action_button.place(x = 500, y = 80)
 
-    create_battle_info(main_window)
+    create_battle_info()
 
     # Utilities
-    quit_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/exit.png'))
+    quit_button_icon = ctk.CTkImage(light_image = Image.open(Asset.UI_EXIT_ICON.path))
     quit_button = ctk.CTkButton(main_window, text = 'Quit', image = quit_button_icon, width = 80, compound = 'left', command = sys.exit)
     quit_button.place(x = 190, rely = 1, y = -20, anchor = 'w')
 
-    settings_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/settings-sliders.png'))
+    settings_button_icon = ctk.CTkImage(light_image = Image.open(Asset.UI_SETTINGS_SLIDER_ICON.path))
     settings_button = ctk.CTkButton(main_window, text = 'Settings', image = settings_button_icon, width = 80, compound = 'left', command = lambda: display_settings_window(main_window))
     settings_button.place(x = 275, rely = 1, y = -20, anchor = 'w')
 
-    unit_info_button_icon = ctk.CTkImage(light_image = Image.open('assets/ui/info.png'))
-    unit_info_button = ctk.CTkButton(main_window, text = 'Unit info', image = unit_info_button_icon, width = 100, compound = 'left', command = lambda: display_unit_stats(main_window, unit_select_input))
+    unit_info_button_icon = ctk.CTkImage(light_image = Image.open(Asset.UI_INFO_ICON.path))
+    unit_info_button = ctk.CTkButton(main_window, text = 'Unit info', image = unit_info_button_icon, width = 100, compound = 'left', command = lambda: display_unit_stats(main_window, active_units_team_1, active_units_team_2, selected_unit_row, selected_unit_column))
     unit_info_button.place(x = 368, rely = 1, y = -20, anchor = 'w')
 
     clear_selection_button = ctk.CTkButton(main_window, text = 'Clear unit selection', width = 100, command = clear_selected_overlay)

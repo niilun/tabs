@@ -1,16 +1,20 @@
 import customtkinter as ctk, logging, globals
+
 from PIL import Image
-from .unit_management import all_units_map
+from assets.manifest import Asset
 
-def display_unit_stats(main_window, unit_select_input):
+
+def display_unit_stats(main_window, active_units_team_1, active_units_team_2, selected_unit_row, selected_unit_column):
     '''Shows stats of selected unit in an info window.'''
-
-    # Get the listbox selection
-    try:
-        selected_unit = unit_select_input.get(unit_select_input.curselection())
-        selected_unit = all_units_map[selected_unit]()
-    except Exception:
-        # Tcl throws an error if there's no listbox selection, so we just return without clogging the console
+    
+    if selected_unit_row == 0:
+        selected_unit = active_units_team_1[selected_unit_column + 1]
+    elif selected_unit_row == 1:
+        selected_unit = active_units_team_2[selected_unit_column + 1]
+    else:
+        raise Exception(f'Invalid unit row {selected_unit_row} in {__name__}')
+    
+    if selected_unit == None:
         return
     
     # If the window already exists, reuse it. Otherwise, create it
@@ -30,15 +34,13 @@ def display_unit_stats(main_window, unit_select_input):
         globals.stat_window_active = stat_window
 
     stat_window.title(f'Unit info // {selected_unit.unit_name}')
-
-    # Unit image
-    unit_resource_path = f'assets/units/{selected_unit.unit_name.replace(" ", "-").lower()}.png'
+    
     try:
-        unit_image = ctk.CTkImage(light_image = Image.open(unit_resource_path), size = (128, 128))
+        unit_image = ctk.CTkImage(light_image = Image.open(selected_unit.asset_path), size = (128, 128))
         unit_image_label = ctk.CTkLabel(stat_window, text = '', image = unit_image)
     except Exception:
-        logging.warning(f'Failed to find image {unit_resource_path}, using placeholder')
-        unit_image = ctk.CTkImage(light_image = Image.open('assets/units/placeholder.png'), size = (128, 128))
+        logging.warning(f"Unit's asset_path is not set or invalid, using placeholder")
+        unit_image = ctk.CTkImage(light_image = Image.open(Asset.UNIT_PLACEHOLDER_ICON.path), size = (128, 128))
         unit_image_label = ctk.CTkLabel(stat_window, text = '', image = unit_image)
     
     unit_image_label.pack(side = 'left', fill = 'y')
