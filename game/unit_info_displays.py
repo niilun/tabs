@@ -12,7 +12,7 @@ def display_unit_stats(main_window, active_units_team_1, active_units_team_2, se
     elif selected_unit_row == 1:
         selected_unit = active_units_team_2[selected_unit_column + 1]
     else:
-        raise Exception(f'Invalid unit row {selected_unit_row} in {__name__}')
+        return
     
     if selected_unit == None:
         return
