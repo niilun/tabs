@@ -12,20 +12,13 @@ I initially created this to help predict outcomes in turn-based games, but since
 
 ## Adding your own units
 
-You need just a couple things to create a shiny new unit:
-
-1. To work with the game, a unit needs to have
-    - ```current_health```
-    - ```max_health```
-    - ```armor```
-    - ```attack_damage```
-in it's `__init__` method.
+1. First, copy one of the examples (like ```warrior.py```) already found in the ```units/``` folder in this repo and set up the unit's name, class init method and stats.
 
     > **Note**: Units can have ```attributes``` like *cavalry* or *melee* that other units can check against for special effects (ex. anti-cavalry deals more damage to cavalry)
 
     > **Optional**: You can set a unit's own icon by registering it as an asset in ```assets/manifest.py```, then linking that asset to the unit's ```asset_path``` variable.
 
-2. Decorate the unit's class definition with ```@register_new_unit```, imported from the ```units``` module.
+2. Make sure the unit's class definition is decorated with ```@register_new_unit```, imported from the ```units``` module. This is needed for the game to register it.
 
 3. Now, start TABS and your unit should load automatically!
 
@@ -33,11 +26,11 @@ in it's `__init__` method.
 
 ## Building an executable
 
-You can package the code into **executable form** using ```pyinstaller```. However, you **still** need the ```assets``` folder present with the executable. You just need to run the build scripts from ```build_scripts/``` based on your platform.
+You can package the code into **executable form** using ```pyinstaller```. This still requires the ```assets``` folder to be present with the executable. You just need to run the build scripts from ```build_scripts/``` based on your platform.
 
 ## Extra info / Acknowledgments
 
-Logo was made using the [Null](https://online-fonts.com/fonts/null) font (Made by Svetoslav Simov).
+Logo made using the [Null](https://online-fonts.com/fonts/null) font (Made by Svetoslav Simov).
 
 Some UI icons from [Uicons](https://www.flaticon.com/uicons) by Flaticon.
 

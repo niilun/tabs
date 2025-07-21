@@ -4,7 +4,7 @@ import globals
 from PIL import Image
 from assets.manifest import Asset
 
-def create_battle_info():
+def create_battle_info(clear_unit_selection_button_reference):
     from game.game_window import widgets_team_1, widgets_team_2, show_overlay_selected
 
     main_window = globals.main_window_reference
@@ -22,7 +22,7 @@ def create_battle_info():
             frame = ctk.CTkFrame(battle_info, width = 120, height = 200)
 
             # Selection for unit info
-            unit_selection_overlay = ctk.CTkButton(frame, width = 200, height = 200, text = '', hover = True, fg_color = 'transparent', command = lambda i=i, j=j: show_overlay_selected(i, j))
+            unit_selection_overlay = ctk.CTkButton(frame, width = 200, height = 200, text = '', hover = True, fg_color = 'transparent', command = lambda i=i, j=j: show_overlay_selected(i, j, clear_unit_selection_button_reference))
             unit_selection_overlay.place(relx=0, rely=0, relwidth=1, relheight=1)
 
             # Use a placeholder file until an actual unit fills the slot
@@ -32,7 +32,7 @@ def create_battle_info():
             unit_health = ctk.CTkCanvas(frame, height=15, width= 80, background='gray')
             unit_name = ctk.CTkLabel(frame, text='Empty slot', width = 80)
 
-            unit_effects = ctk.CTkFrame(frame, height= 15, width = 90)
+            unit_effects = ctk.CTkFrame(frame, height = 15, width = 90)
             
             unit_image.pack(expand = True)
             unit_name.pack()

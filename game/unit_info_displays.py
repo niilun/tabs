@@ -3,17 +3,24 @@ import customtkinter as ctk, logging, globals
 from PIL import Image
 from assets.manifest import Asset
 
+from units import unit_registry
 
-def display_unit_stats(main_window, active_units_team_1, active_units_team_2, selected_unit_row, selected_unit_column):
+def display_unit_stats(main_window, unit_select_input, active_units_team_1, widgets_team_1, active_units_team_2, widgets_team_2, selected_unit_row, selected_unit_column):
     '''Shows stats of selected unit in an info window.'''
     
-    if selected_unit_row == 0:
+    # if a unit in the left row is selected, set it first
+    selected_unit = unit_select_input.get(unit_select_input.curselection())
+
+    if selected_unit != None:
+        selected_unit = unit_registry[selected_unit]()
+
+    # if a battling unit is selected, set it, overriding the first (unless the slot is empty)
+    if selected_unit_row == 0 and str(widgets_team_1[selected_unit_column]['name'].cget('text')) != 'Empty slot':
         selected_unit = active_units_team_1[selected_unit_column + 1]
-    elif selected_unit_row == 1:
+    elif selected_unit_row == 1 and str(widgets_team_2[selected_unit_column]['name'].cget('text')) != 'Empty slot':
         selected_unit = active_units_team_2[selected_unit_column + 1]
-    else:
-        return
     
+    # if none are selected, return
     if selected_unit == None:
         return
     
@@ -30,7 +37,7 @@ def display_unit_stats(main_window, active_units_team_1, active_units_team_2, se
         stat_window.resizable(False, False)
         stat_window.protocol('WM_DELETE_WINDOW', lambda: stat_window.withdraw())
 
-        # Store it for later use
+        # Store the window for later use
         globals.stat_window_active = stat_window
 
     stat_window.title(f'Unit info // {selected_unit.unit_name}')

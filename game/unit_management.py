@@ -1,13 +1,5 @@
 import logging
 
-from units.warrior import Warrior
-from units.spearman import Spearman
-from units.man_at_arms import ManAtArms
-from units.musketman import Musketman
-from units.line_infantry import LineInfantry
-from units.infantry import Infantry
-from units.mechanized_infantry import MechanizedInfantry
-
 from units import unit_registry
 
 # Unit storage
@@ -53,10 +45,11 @@ def create_unit(unit, team):
         and it should load automatically into the game.
     '''
     from game.game_window import update_scoreboard, selected_overlay, selected_unit_row, selected_unit_column
+    from game.errors import TeamFullError, UnitNotFoundError
     from globals import loaded_config
 
     if unit not in unit_registry:
-        raise Exception('Unit does not exist or is not declared!')
+        raise UnitNotFoundError(unit)
     
     # Load scaling from settings
     health_scaling = loaded_config.getfloat('Game', 'UnitHealthScaling')
@@ -80,13 +73,13 @@ def create_unit(unit, team):
     
     if team == 1:
         if get_total_active_units(1) >= 5:
-            raise Exception('Team 1 is full!')
+            raise TeamFullError(team)
         
         logging.debug(f'Created unit {unit} in slot {find_first_available_slot(1)} on team {team}.')
         active_units_team_1[find_first_available_slot(1)] = created_unit
     elif team == 2:
         if get_total_active_units(2) >= 5:
-            raise Exception('Team 2 is full!')
+            raise TeamFullError(team)
 
         logging.debug(f'Created unit {unit} in slot {find_first_available_slot(2)} on team {team}.')
         active_units_team_2[find_first_available_slot(2)] = created_unit
@@ -97,12 +90,13 @@ def create_unit(unit, team):
 
 def take_next_action():
     '''Calculates the next unit that's supposed to take its turn and runs its take_turn() method.'''
+    from game.errors import TeamsEmptyError
     global turn_counter
     turn_taken = False
 
     # No fights can happen between empty teams
     if get_total_active_units(1) == 0 or get_total_active_units(2) == 0:
-        raise Exception('No fights can happen between empty teams! \nAdd some units to both before continuing to take turns.')
+        raise TeamsEmptyError
     
     # Reset to a new turn cycle if all turns exhausted
     if turn_counter > get_total_active_units(1) + get_total_active_units(2):

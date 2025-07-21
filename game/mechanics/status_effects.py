@@ -4,27 +4,28 @@ class status_effects(Enum):
     """
     These effects can be applied to units and have various impacts on their abilities and actions.
 
-    As a standard, effects stop the next turn after they are cleared
+    Effects are applied using a unit's apply_effect() method by passing the effect. A default one exists
+    in the base unit class, which applies them for three turns (except a couple). You can override this
+    with your own method.
+    
+    As a standard, effects should stop the next turn after they are cleared
     off the unit's active effects.
 
-    IMPORTANT: units need to check for active effects on their own
-    when their turn is called and apply the effects they choose to
-    themselves.
+    A standardised way of handling effects is provided in the base unit class with
+    the handle_effects function, however you can override it with your own.
     """
 
     # Statuses that inflict self damage
     BURN = ["Burned", "Takes damage every turn"]
     POISON = ["Poisoned", "Takes damage every turn"]
     VENOM = ["Envenomed", "Takes ramping damage every turn"]
-    CONFUSED = ["Confused", "Takes damage when attacking"]
     BLEEDING = ["Bleeding", "Loses health gradually"]
 
     # Statuses that prevent actions
 
-    STUN = ["Stunned", "Cannot act"]
-    FROZEN = ["Frozen", "Cannot act and takes double damage from the next attack, after which the effect is removed"]
-    PARALYZED = ["Paralyzed", "May fail actions"]
-    DEFENCELESS = ["Defenceless", "Cannot 'Defend' and armor gets penetrated by attacks"]
+    STUNNED = ["Stunned", "Cannot act"]
+    FROZEN = ["Frozen", "Cannot act"]
+    DEFENCELESS = ["Defenceless", "Cannot 'Defend' and armor gets broken"]
 
     # The intent is to have Drowsy -> Sleepy -> Asleep be a weaker version of Stun, as it takes 3 turns to actually take effect.
     DROWSY = ["Drowsy", "Getting drowsy..."]
@@ -32,5 +33,6 @@ class status_effects(Enum):
     ASLEEP = ["Asleep", "Cannot act"]
     
     # Statuses that affect specific actions
-    BLINDED = ["Dazed", "May fail attacks"]
+    CONFUSED = ["Confused", "Has reduced accuracy"]
+    BLINDED = ["Dazed", "Has highly reduced accuracy"]
     SILENCED = ["Silenced", "Cannot use abilities"]
