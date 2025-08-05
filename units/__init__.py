@@ -6,6 +6,7 @@ def import_all_units():
     '''Ran on startup, imports all units.'''
 
     for loader, module, pkg in pkgutil.iter_modules(units.__path__):
+        # don't import the base unit as it is a model, not a real unit
         if module == 'base':
             continue
         logging.debug(f'Imported unit {module}')

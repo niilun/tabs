@@ -14,5 +14,6 @@ class Musketman(BaseUnit):
         self.max_health = 110
         self.current_health = self.max_health
         self.armor = 0
+        self.accuracy = 100
         self.attack_damage = 55
         self.current_attack_damage = self.attack_damage

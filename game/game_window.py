@@ -121,6 +121,9 @@ def update_team_slots(team, widgets):
                 unit_armor_percent = unit.armor / unit.max_health
                 info_slot['health'].create_rectangle(0, 0, 80 * unit_armor_percent, 20, fill = 'yellow')
 
+def show_turn_indicator(widget):
+    pass
+
 def update_scoreboard():
     '''Updates the scoreboard (battle info), checks for new units or the death of existing ones.'''
     from game.unit_management import active_units_team_1, active_units_team_2, turn_counter

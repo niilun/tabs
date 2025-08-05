@@ -14,5 +14,6 @@ class ManAtArms(BaseUnit):
         self.max_health = 100
         self.current_health = self.max_health
         self.armor = 0
+        self.accuracy = 100
         self.attack_damage = 45
         self.current_attack_damage = self.attack_damage
