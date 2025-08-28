@@ -121,15 +121,36 @@ def update_team_slots(team, widgets):
                 unit_armor_percent = unit.armor / unit.max_health
                 info_slot['health'].create_rectangle(0, 0, 80 * unit_armor_percent, 20, fill = 'yellow')
 
-def show_turn_indicator(widget):
-    pass
+def show_turn_indicator():
+    '''Finds the unit whose turn is next and passes that to display_unit_turn_incoming for display.'''
+    from game.unit_management import turn_counter, get_total_active_units
+    from game.unit_info_displays import display_unit_turn_incoming
+
+    # Reset all widgets to inactive
+    for widget in widgets_team_1 + widgets_team_2:
+        widget['turn_indicator'].itemconfig(1, fill = 'gray', outline = 'gray')
+
+    # Find which team's turn it is
+    if turn_counter <= get_total_active_units(1):
+        id = turn_counter - 1
+        if id < len(widgets_team_1):
+            logging.debug(f'Sent widget id {id} on team 1 for indicator update')
+            display_unit_turn_incoming(widgets_team_1[id]['turn_indicator'])
+        return
+    if turn_counter <= get_total_active_units(1) + get_total_active_units(2):
+        id = turn_counter - get_total_active_units(1) - 1
+        if id < len(widgets_team_2):
+            logging.debug(f'Sent widget id {id} on team 2 for indicator update')
+            display_unit_turn_incoming(widgets_team_2[id]['turn_indicator'])
+        return
 
 def update_scoreboard():
     '''Updates the scoreboard (battle info), checks for new units or the death of existing ones.'''
-    from game.unit_management import active_units_team_1, active_units_team_2, turn_counter
+    from game.unit_management import active_units_team_1, active_units_team_2
     
     update_team_slots(active_units_team_1, widgets_team_1)
     update_team_slots(active_units_team_2, widgets_team_2)
+    show_turn_indicator()
 
 def show_overlay_selected(row: int, column: int, clear_unit_selection_button_reference):
     '''Sets one of the unit slots as selected. The previous one gets unset.'''

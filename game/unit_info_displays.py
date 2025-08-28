@@ -94,3 +94,7 @@ def display_unit_stats(main_window, unit_select_input, active_units_team_1, widg
     abilities_list.grid(row = 4, column = 1)
 
     logging.info(f'Showing unit info for {selected_unit.unit_name}')
+
+def display_unit_turn_incoming(widget):
+    '''Updates given widget to indicate an incoming turn'''
+    widget.itemconfig(1, fill = 'green', outline = 'green')
