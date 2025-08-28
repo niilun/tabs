@@ -1,9 +1,16 @@
 def check_dependencies():
-    import pkg_resources, sys, subprocess, platform
+    # if system packages are frozen, we're running inside a bundled exe and can skip dependency checks
+    import sys, subprocess, platform
+    if getattr(sys, 'frozen', False):
+        return
 
-    requirements = {'pyinstaller', 'requests', 'configparser', 'customtkinter', 'ctklistbox', 'ctkmessagebox'}
-    found = {pkg.key for pkg in pkg_resources.working_set}
-    missing = requirements - found
+    requirements = ['pyinstaller', 'requests', 'configparser', 'customtkinter', 'ctklistbox', 'ctkmessagebox']
+    missing = []
+    for package in requirements:
+        try:
+            __import__(package)
+        except ImportError:
+            missing.append(package)
 
     if missing:
         print(f'Found missing packages: {", ".join(missing)}')
