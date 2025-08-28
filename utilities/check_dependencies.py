@@ -1,16 +1,25 @@
 def check_dependencies():
     # if system packages are frozen, we're running inside a bundled exe and can skip dependency checks
     import sys, subprocess, platform
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
         return
-
-    requirements = ['pyinstaller', 'requests', 'configparser', 'customtkinter', 'ctklistbox', 'ctkmessagebox']
+    
+    # requirements mapped by pip package name to import name, some are different
+    requirements = {
+        'pyinstaller': 'PyInstaller',
+        'requests': 'requests',
+        'configparser': 'configparser',
+        'customtkinter': 'customtkinter',
+        'ctklistbox': 'CTkListbox',
+        'ctkmessagebox': 'CTkMessagebox'
+    }
     missing = []
-    for package in requirements:
+    # try and import packages, if they fail to import add their pip name as missing
+    for pip_name, import_name in requirements.items():
         try:
-            __import__(package)
+            __import__(import_name)
         except ImportError:
-            missing.append(package)
+            missing.append(pip_name)
 
     if missing:
         print(f'Found missing packages: {", ".join(missing)}')
