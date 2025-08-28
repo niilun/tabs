@@ -27,7 +27,6 @@ def create_battle_info(clear_unit_selection_button_reference):
 
             # Green circle that lights up when it's this unit's turn
             unit_turn_indicator = ctk.CTkCanvas(frame, height = 10, width = 10)
-            unit_turn_indicator.create_oval(1, 1, 10, 10, fill = 'gray', outline = 'gray')
 
             # Use a placeholder file until an actual unit fills the slot
             unit_image_res = ctk.CTkImage(light_image=Image.open(Asset.UNIT_PLACEHOLDER_ICON.path), size = (100, 100))

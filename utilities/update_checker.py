@@ -11,9 +11,11 @@ def update_check(current_version, repository_data):
             logging.warning('+-----------------------------------------------------------------------------------------+')
             logging.warning(f'| UPDATE FOUND! Download version {server_version} at https://github.com/{repository_data}/releases/latest. |')
             logging.warning('+-----------------------------------------------------------------------------------------+')
+        else:
+            logging.debug(f'Client {current_version} >= {server_version} Server')
     except Exception:
         logging.error(f'Error while checking for updates, skipping.')
-    logging.info('Finished version check.')
+    logging.info(f'Finished version check successfully.')
 
 def version_check(client_version: str, server_version: str) -> bool:
     '''Returns "True" if client has a greater or equal version to server version, otherwise "False".'''

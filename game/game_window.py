@@ -128,7 +128,7 @@ def show_turn_indicator():
 
     # Reset all widgets to inactive
     for widget in widgets_team_1 + widgets_team_2:
-        widget['turn_indicator'].itemconfig(1, fill = 'gray', outline = 'gray')
+        widget['turn_indicator'].delete('all')
 
     # Find which team's turn it is
     if turn_counter <= get_total_active_units(1):
@@ -213,6 +213,16 @@ def display_main_window():
     take_next_action_button.place(x = 500, y = 80)
 
     # Utilities
+    last_game_event_frame = ctk.CTkFrame(main_window, border_color = 'gray', width = 300, height = 30)
+    last_game_event_label = ctk.CTkLabel(last_game_event_frame, text = ' Last event ', height = 30, bg_color = '#EBEBEB', fg_color = 'gray65', corner_radius = 10)
+
+    last_game_event_text = ctk.CTkLabel(last_game_event_frame, height = 30, width = 220, text = ' Nothing yet... ')
+    globals.last_game_event_text_reference = last_game_event_text
+    
+    last_game_event_frame.place(x = 380, y = 540)
+    last_game_event_text.pack(side = ctk.RIGHT)
+    last_game_event_label.pack(side = ctk.LEFT)
+
     quit_button_icon = ctk.CTkImage(light_image = Image.open(Asset.UI_EXIT_ICON.path))
     quit_button = ctk.CTkButton(main_window, text = 'Quit', image = quit_button_icon, width = 80, compound = 'left', command = sys.exit)
     quit_button.place(x = 190, rely = 1, y = -20, anchor = 'w')
@@ -234,7 +244,7 @@ def display_main_window():
     version_indicator = ctk.CTkLabel(main_window, text = f'v{version}')
     version_indicator.place(x = 880, rely = 1, y = -10, anchor = 'w')
 
-    # pass the unit selection so we know to set it blue, when a unit is selected
+    # Pass the unit selection so we can set it blue, when a unit is selected
     create_battle_info(clear_selection_button)
 
     logging.info('Main window loaded.')

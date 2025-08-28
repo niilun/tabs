@@ -31,9 +31,11 @@ class FireWizard(BaseUnit):
         '''
 
         self.attack(target, self.current_attack_damage * 0.5)
-
-        logging.debug(f'{self.unit_name} used Fire Wave on {target.unit_name}, dealing {self.attack_damage * 0.5} damage.')
+        
+        result = f'{self.unit_name} used Fire Wave on {target.unit_name}, dealing {self.attack_damage * 0.5} damage.'
         target.apply_effect(status_effects.BURN)
+        logging.debug(result)
+        return result
 
     def take_turn(self, enemies: dict):
         '''
@@ -45,12 +47,12 @@ class FireWizard(BaseUnit):
         self.handle_effects()
 
         if not self.is_able_to_act:
-            return
+            return f'{self.unit_name} is not able to act!'
         
         if self.can_defend and self.can_use_abilities:
             if self.current_health < self.max_health/2 and self.armor < 10 and randint(1, 10) <= 2:
                 self.ability_defend()
-                return
+                return f'{self.unit_name} used Defend!'
         
         # Target is the enemy with lowest HP. If there are 2+ units with the same HP, the first from the left is chosen
         min_health_in_enemy_team = min([enemy.current_health for enemy in enemies.values() if enemy != None])
@@ -62,6 +64,6 @@ class FireWizard(BaseUnit):
         
         # ABILITY: Fire Wave (25%)
         if randint(1, 4) == 1 and self.can_use_abilities:
-            self.ability_fire_wave(target)
+            return self.ability_fire_wave(target)
         else:            
-            self.attack(target, self.current_attack_damage)
+            return self.attack(target, self.current_attack_damage)

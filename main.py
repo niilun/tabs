@@ -27,18 +27,20 @@ repository_data = config['Network']['RepositoryData']
 do_update = config.getboolean('Network', 'PerformUpdateCheck')
 debug_level = config.getint('Debug', 'DebugLevel')
 
-# Load logging
-setup_logging(debug_level)
+# Load logging and get session log file
+log_path = setup_logging(debug_level)
 
 def main():
     '''Starter main function'''
     logging.info(f'TABS Version {version}')
-    logging.info(f'Development repository: https://github.com/{repository_data}\n')
+    logging.info(f'Development repository: https://github.com/{repository_data}')
+    logging.info(f'Current session log @ {log_path}\n')
 
     # Check for updates
     if do_update:
         update_check(version, repository_data)
-
+    else:
+        logging.info('Skipping update check since PerformUpdateCheck is disabled.')
     import_all_units()
 
     effect_names = []

@@ -97,4 +97,4 @@ def display_unit_stats(main_window, unit_select_input, active_units_team_1, widg
 
 def display_unit_turn_incoming(widget):
     '''Updates given widget to indicate an incoming turn'''
-    widget.itemconfig(1, fill = 'green', outline = 'green')
+    widget.create_oval(1, 1, 10, 10, fill = 'green', outline = 'green')

@@ -8,13 +8,14 @@ settings_window_active = None
 # Settings
 loaded_config = None
 
-# Main window reference
+# Window references
 main_window_reference = None
+last_game_event_text_reference = None
 
 default_config = configparser.ConfigParser()
 default_config.optionxform = str # stop configparser from lowering config names
 
-default_config['Game'] = {'Version': '0.9.3',
+default_config['Game'] = {'Version': '1.0.0',
                           'UnitHealthScaling': 1,
                           'UnitAttackScaling': 1
                           }

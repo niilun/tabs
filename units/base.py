@@ -103,12 +103,12 @@ class BaseUnit():
         '''
 
         if not self.is_able_to_act:
-            return
+            return f'{self.unit_name} is not able to act!'
         
         if self.can_defend and self.can_use_abilities:
             if self.current_health < self.max_health/2 and self.armor < 10 and randint(1, 10) <= 2:
                 self.ability_defend()
-                return
+                return f'{self.unit_name} used Defend!'
         
         # Target is the enemy with lowest HP. If there are 2+ units with the same HP, the first from the left is chosen
         min_health_in_enemy_team = min([enemy.current_health for enemy in enemies.values() if enemy != None])
@@ -118,16 +118,20 @@ class BaseUnit():
             elif enemy.current_health == min_health_in_enemy_team:
                 target = enemy
         
-        self.attack(target, self.current_attack_damage)
+        return self.attack(target, self.current_attack_damage)
     
     def attack(self, target, damage: int):
         # Clamp accuracy to 100
         accuracy = max(1, min(100, self.accuracy))
         if randint(1, 100) <= accuracy:
             target.get_attacked(damage)
-            logging.debug(f'{self.unit_name} attacked unit {target.unit_name}, dealing {self.attack_damage} damage.')
+            result = f'{self.unit_name} attacked unit {target.unit_name}, dealing {self.attack_damage} damage.'
+            logging.debug(result)
+            return result
         else:
-            logging.debug(f'{self.unit_name} missed its attack!')
+            result = f'{self.unit_name} missed its attack!'
+            logging.debug(result)
+            return result
 
     def get_attacked(self, damage):
         '''

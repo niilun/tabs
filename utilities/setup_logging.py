@@ -22,8 +22,10 @@ def setup_logging(log_level: int):
     if os.path.exists(f'logs/{current_time} {current_uuid}.log'):
         current_uuid = uuid.uuid4()
     
-    file_logger = logging.FileHandler(f'logs/{current_time} {current_uuid}.log')
+    log_path = f'logs/{current_time} {current_uuid}.log'
+    file_logger = logging.FileHandler(log_path)
     file_logger.setFormatter(file_format)
 
     logger.addHandler(stdout_logger)
     logger.addHandler(file_logger)
+    return log_path

@@ -91,6 +91,7 @@ def create_unit(unit, team):
 def take_next_action():
     '''Calculates the next unit that's supposed to take its turn and runs its take_turn() method.'''
     from game.errors import TeamsEmptyError
+    from globals import last_game_event_text_reference
     global turn_counter
     turn_taken = False
 
@@ -102,12 +103,14 @@ def take_next_action():
     if turn_counter > get_total_active_units(1) + get_total_active_units(2):
         turn_counter = 1
     
+    widget = last_game_event_text_reference
+    result = None
     if turn_counter <= get_total_active_units(1) and not turn_taken:
         logging.debug(f'Next turn: team 1, slot {turn_counter}.')
         try:
             unit = active_units_team_1.get(turn_counter)
             if unit:
-                unit.take_turn(active_units_team_2)
+                result = unit.take_turn(active_units_team_2)
             else:
                 turn_counter += 1
                 logging.debug('Skipping turn because of missing unit.')
@@ -124,7 +127,7 @@ def take_next_action():
         try:
             unit = active_units_team_2.get(turn_counter - get_total_active_units(1))
             if unit:
-                unit.take_turn(active_units_team_1)
+                result = unit.take_turn(active_units_team_1)
             else:
                 turn_counter += 1
                 logging.debug('Skipping turn because of missing unit.')
@@ -135,7 +138,9 @@ def take_next_action():
 
         turn_counter += 1
         turn_taken = True
-
+    
+    if result:
+        widget.configure(text = f' {result} ')
     cleanup_units()
 
 def cleanup_units():
