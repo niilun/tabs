@@ -28,6 +28,8 @@ I initially created this to help predict outcomes in turn-based games, but since
 
 You can package the code into **executable form** using ```pyinstaller```. This still requires the ```assets``` folder to be present with the executable. You just need to run the build scripts from ```build_scripts/``` based on your platform.
 
+> **NOTE**: due to how builds currently work, units cannot be changed after compile. If you wish to modify or add new units, you need to recompile.
+
 ## Extra info / Acknowledgments
 
 Logo made using the [Null](https://online-fonts.com/fonts/null) font (Made by Svetoslav Simov).
