@@ -1,54 +1,54 @@
-import logging
-from random import randint
-
 from .base import BaseUnit
 from units import register_new_unit
 
-from game.mechanics.status_effects import status_effects
+import logging
+from random import randint
 
 @register_new_unit
-class FireWizard(BaseUnit):
+class ShieldBearer(BaseUnit):
     def __init__(self):
-        self.unit_name = 'Fire Wizard'
-        self.description = 'A wizard capable of harnessing the powers of fire, burning its enemies to ensure victory.'
-        self.abilities = ['Fire Wave', 'Defend']
+        self.unit_name = 'Shield Bearer'
+        self.description = 'The Shield Bearer is a heavy unit. While lacking in physical power, its Bulwark ability shields its teammates from harm.'
+        self.abilities = ['Defend', 'Bulwark']
         self.is_able_to_act = True
         self.can_defend = True
         self.can_use_abilities = True
-        self.type = 'Light'
-        self.attack_style = 'Magic'
-        self.attributes = []
+        self.type = 'Heavy'
+        self.attack_style = 'Melee'
+        self.attributes = ['Shielded']
         self.effects = {}
-        self.max_health = 120
+        self.max_health = 300
         self.current_health = self.max_health
         self.armor = 0
-        self.base_accuracy = 100
+        self.base_accuracy = 80
         self.accuracy = 100
-        self.attack_damage = 70
+        self.attack_damage = 20
         self.current_attack_damage = self.attack_damage
-
-    def ability_fire_wave(self, target):
+    
+    def ability_bulwark(self, allies: dict, current_unit_position: int):
         '''
-        ABILITY: Fire Wave
+        ABILITY: Bulwark
 
-        Deals halved attack damage, but inflicts burn.
+        The Shield Bearer takes the charge, boosting its own and its teammates' armor by the set boost value!
         '''
-        damage = self.current_attack_damage * 0.5
+        armor_boost_value = 80
 
-        self.attack(target, damage)
-        
-        result = f'{self.unit_name} used Fire Wave on {target.unit_name}, dealing {damage} damage.'
-        target.apply_effect(status_effects.BURN)
+        self.armor += armor_boost_value
+        try:
+            allies[current_unit_position - 1].armor += armor_boost_value
+        except Exception:
+            pass
+        try:
+            allies[current_unit_position + 1].armor += armor_boost_value
+        except Exception:
+            pass
+
+        result = f'The {self.unit_name} boosts its own and its teammates\' armor by {armor_boost_value}!'
+
         logging.debug(result)
         return result
 
     def take_turn(self, allies: dict, enemies: dict, current_unit_position: int):
-        '''
-        Fire Wizard AI
-
-        Tries to use Defend (although randomly) if HP is lower than 50%, then runs 25% for Fire Wave, otherwise attacks.
-        '''
-
         self.handle_effects()
 
         if not self.is_able_to_act:
@@ -67,11 +67,11 @@ class FireWizard(BaseUnit):
             elif enemy.current_health == min_health_in_enemy_team:
                 target = enemy
         
+        self.handle_self_attributes()
         self.handle_attributes(target)
         self.handle_type(target)
         
-        # ABILITY: Fire Wave (25%)
-        if randint(1, 4) == 1 and self.can_use_abilities:
-            return self.ability_fire_wave(target)
-        else:            
+        if randint(1, 10) == 1 and self.can_use_abilities:
+            return self.ability_bulwark(allies, current_unit_position)
+        else:
             return self.attack(target, self.current_attack_damage)

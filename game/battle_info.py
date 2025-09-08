@@ -29,22 +29,22 @@ def create_battle_info(clear_unit_selection_button_reference):
             unit_turn_indicator = ctk.CTkCanvas(frame, height = 10, width = 10)
 
             # Use a placeholder file until an actual unit fills the slot
-            unit_image_res = ctk.CTkImage(light_image=Image.open(Asset.UNIT_PLACEHOLDER_ICON.path), size = (100, 100))
-            unit_image = ctk.CTkLabel(frame, text = '', width = 80, image = unit_image_res)
+            unit_image = ctk.CTkImage(light_image=Image.open(Asset.UI_SLOT_EMPTY_ICON.path), size = (100, 100))
+            unit_image_label = ctk.CTkLabel(frame, text = '', width = 80, image = unit_image)
 
             unit_health = ctk.CTkCanvas(frame, height=15, width= 80, background = 'gray')
             unit_name = ctk.CTkLabel(frame, text='Empty slot', width = 80)
 
             unit_effects = ctk.CTkFrame(frame, height = 15, width = 90)
 
-            unit_image.pack(expand = True)
+            unit_image_label.pack(expand = True)
             unit_name.pack()
             unit_effects.pack()
             unit_health.pack(pady = (0, 4))
             unit_turn_indicator.place(x = 102, y = 0)
 
             widget_dict = {
-                'image': unit_image,
+                'image': unit_image_label,
                 'name': unit_name,
                 'info_selection': unit_selection_overlay,
                 'turn_indicator': unit_turn_indicator,

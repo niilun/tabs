@@ -2,7 +2,7 @@ import customtkinter as ctk, logging, sys, globals, configparser
 from CTkListbox import CTkListbox
 from PIL import Image
 
-from assets.manifest import Asset
+from assets.manifest import Asset, unit_icons_map
 
 from utilities.window_infoboxes import show_error
 from utilities.reload_game import reload_game
@@ -59,9 +59,15 @@ def update_team_slots(team, widgets):
     # Function that resets the given slot to default (called if a unit dies)
     def set_default_slot(slot):
         try:
+            # get the default empty slot icon
+            unit_image = ctk.CTkImage(light_image=Image.open(Asset.UI_SLOT_EMPTY_ICON.path), size = (100, 100))
+
             slot['name'].configure(text = 'Empty slot')
+            slot['image'].configure(image = unit_image)
             slot['health'].delete('all')
             slot['health'].create_rectangle(0, 0, 80, 20, fill = 'gray')
+            for widget in slot['effects'].winfo_children():
+                widget.destroy()
         except Exception:
             raise Exception(f'Invalid slot call {slot} in {__name__}')
         
@@ -79,6 +85,14 @@ def update_team_slots(team, widgets):
                 info_slot['name'].configure(text=f'{unit.unit_name[:11].strip()}...')
             else:
                 info_slot['name'].configure(text=unit.unit_name)
+            
+            unit_image_path = unit_icons_map.get(unit.unit_name, None).path
+
+            if unit_image_path:
+                unit_image = ctk.CTkImage(light_image = Image.open(unit_image_path), size = (100, 100))
+                info_slot['image'].configure(image = unit_image)
+                info_slot['image'].image = unit_image
+
             info_slot['health'].delete('all')
 
             info_slot['health'].create_rectangle(0, 0, 80 * unit_health_percent, 20, fill = 'green')
@@ -174,11 +188,13 @@ def show_overlay_selected(row: int, column: int, clear_unit_selection_button_ref
 
 def clear_selected_overlay(clear_unit_selection_button_reference):
     '''Clears the current unit selection (if it exists).'''
-    global selected_overlay
+    global selected_overlay, selected_unit_column, selected_unit_row
     if selected_overlay != None:
         clear_unit_selection_button_reference.configure(fg_color='gray', hover_color = 'gray')
         selected_overlay['info_selection'].configure(fg_color='transparent')
         selected_overlay = None
+        selected_unit_column = None
+        selected_unit_row = None
 
 def display_main_window():
     '''Creates and shows the game window.'''
@@ -216,7 +232,7 @@ def display_main_window():
     last_game_event_frame = ctk.CTkFrame(main_window, border_color = 'gray', width = 300, height = 30)
     last_game_event_label = ctk.CTkLabel(last_game_event_frame, text = ' Last event ', height = 30, bg_color = '#EBEBEB', fg_color = 'gray65', corner_radius = 10)
 
-    last_game_event_text = ctk.CTkLabel(last_game_event_frame, height = 30, width = 220, text = ' Nothing yet... ')
+    last_game_event_text = ctk.CTkLabel(last_game_event_frame, height = 30, width = 340, text = ' Nothing yet... ')
     globals.last_game_event_text_reference = last_game_event_text
     
     last_game_event_frame.place(x = 380, y = 540)

@@ -15,7 +15,7 @@ last_game_event_text_reference = None
 default_config = configparser.ConfigParser()
 default_config.optionxform = str # stop configparser from lowering config names
 
-default_config['Game'] = {'Version': '1.0.0',
+default_config['Game'] = {'Version': '1.1.0',
                           'UnitHealthScaling': 1,
                           'UnitAttackScaling': 1
                           }

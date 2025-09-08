@@ -86,6 +86,9 @@ def create_unit(unit, team):
     else:
         raise Exception(f"Invalid team call {team}")
 
+    # handle attributes on unit spawn, like shields from Shielded
+    created_unit.handle_self_attributes()
+    
     update_scoreboard()
 
 def take_next_action():
@@ -110,7 +113,7 @@ def take_next_action():
         try:
             unit = active_units_team_1.get(turn_counter)
             if unit:
-                result = unit.take_turn(active_units_team_2)
+                result = unit.take_turn(active_units_team_1, active_units_team_2, turn_counter)
             else:
                 turn_counter += 1
                 logging.debug('Skipping turn because of missing unit.')
@@ -127,7 +130,7 @@ def take_next_action():
         try:
             unit = active_units_team_2.get(turn_counter - get_total_active_units(1))
             if unit:
-                result = unit.take_turn(active_units_team_1)
+                result = unit.take_turn(active_units_team_2, active_units_team_1, turn_counter - get_total_active_units(1))
             else:
                 turn_counter += 1
                 logging.debug('Skipping turn because of missing unit.')

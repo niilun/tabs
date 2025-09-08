@@ -34,7 +34,7 @@ You can package the code into **executable form** using ```pyinstaller```. This 
 
 Logo made using the [Null](https://online-fonts.com/fonts/null) font (Made by Svetoslav Simov).
 
-Some UI icons from [Uicons](https://www.flaticon.com/uicons) by Flaticon.
+Some UI icons from [Uicons](https://www.flaticon.com/uicons) by Flaticon and [Mayor Icons](https://www.flaticon.com/authors/mayor-icons).
 
 ## License
 
