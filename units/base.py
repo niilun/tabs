@@ -117,7 +117,7 @@ class BaseUnit():
         if 'Shielded' in self.attributes:
             if self.armor < 15:
                 self.armor = 15
-                logging.info(f'{self.unit_name} had its armor boosted due to its Shielded attribute')
+                logging.info(f'{self.unit_name} had its armor boosted due to its Shielded attribute!')
     
     def handle_type(self, enemy):
         match (self.type, enemy.type):
